@@ -3,8 +3,6 @@
 
 ## Onion Architecture / Clean Architecture
 
-![Onion Architecture](https://www.codeguru.com/wp-content/uploads/2021/07/Onion1.png)
-
 Onion Architecture is based on the inversion of control principle. 
 Onion Architecture is comprised of multiple concentric layers interfacing each other towards 
 the core that represents the domain. The architecture does not depend on the data layer as in 
@@ -41,8 +39,6 @@ injection principle so that the application builds a loosely coupled structure a
 internal layer via interfaces.
 
 ### Benefits of Onion Architecture
-
-![Onion](https://portals.clarity-ventures.com/portals/0/images/articles/1382/lead-gen-marketing-clarity.png)
 
 - Better sustainability over time with simplified indexing
 - Reduce dependencies within your platform
