@@ -1,0 +1,60 @@
+﻿@layout LoginLayout
+@page "/"
+
+
+
+<EditForm Model="@user">
+    <div>
+        <br /><br /><br /><br /><br />
+    </div>
+    <div>
+        <h3 style="font-weight:bold; color:purple">ChessServer Login</h3>
+    </div>
+    <div>
+        <br />
+    </div>
+    <div class="col-12 row">
+        <input class="form-control col-12" @bind="user.EmailAddress" placeholder="email address" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <input type="password" class="form-control col-12" @bind="user.Password" placeholder="password" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <span class="col-12"></span>
+        <input type="submit" class="form-control col-6 btn btn-primary" value="Login" />
+        <a href="/signup" class="col-3">Sign up</a>
+    </div>
+    <br />
+    <div class="col-12 row" style="text-align:left; font-weight:bold">
+        <span class="col-12">@LoginMesssage</span>
+    </div>
+</EditForm>
+
+@code
+{
+    User user = new();
+    public class User
+    {
+        public string? EmailAddress { get; set; }
+        public string? Password { get; set; }
+
+    }
+    public string? LoginMesssage { get; set; }
+
+    public bool AuthorizeUser(User person)
+    {
+        person = user;
+        if ((person.EmailAddress == "test") && (person.Password == "test"))
+        {
+            LoginMesssage = "User Authorized.";
+            return true;
+        }
+        else
+        {
+            LoginMesssage = "Login or password is incorrect.";
+            return false;
+        }
+    }
+}
