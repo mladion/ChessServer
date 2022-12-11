@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using Domain.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<ChessDbContext>(options =>
+       options.UseNpgsql(builder.Configuration.GetConnectionString("ChessDatabase")));
 
 var app = builder.Build();
 
@@ -27,7 +31,6 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 
 app.MapRazorPages();
 app.MapControllers();

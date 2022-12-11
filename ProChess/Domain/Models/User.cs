@@ -12,6 +12,7 @@ namespace Domain.Models
 		public string? Biography { get; set; }
 		public int ELO { get; set; }
 		public Privileges Privilege { get; set; }
-		public List<Game> Games { get; set; } = new List<Game>();
+		public List<Game> WhiteGames { get; set; } = new List<Game>();
+		public List<Game> BlackGames { get; set; } = new List<Game>();
 	}
 }
