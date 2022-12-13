@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Domain.Data
+namespace Domain
 {
     public class ChessDbContext : DbContext
     {

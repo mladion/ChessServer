@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models
 {
 	public class Game
 	{
-		public Guid Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
 		public Guid? WhiteUserId { get; set; }
 		public Guid? BlackUserId { get; set; }
 		public int WhiteELO { get; set; }

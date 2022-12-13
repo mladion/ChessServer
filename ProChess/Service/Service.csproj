@@ -7,12 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CustomServices\" />
-    <Folder Include="ICustomServices\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Repository\Repository.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>
