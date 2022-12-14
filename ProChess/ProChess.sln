@@ -5,8 +5,6 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{96DEF177-5632-4430-A744-E6B0EE06AD20}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{EC66F001-58FA-418E-ACA9-A683DE505097}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{BAE751CC-7312-48F8-8275-20C37623E02E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{F9831B00-CE57-4A6B-9746-101091E97CAC}"
@@ -23,10 +21,6 @@ Global
 		{96DEF177-5632-4430-A744-E6B0EE06AD20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96DEF177-5632-4430-A744-E6B0EE06AD20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96DEF177-5632-4430-A744-E6B0EE06AD20}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC66F001-58FA-418E-ACA9-A683DE505097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC66F001-58FA-418E-ACA9-A683DE505097}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC66F001-58FA-418E-ACA9-A683DE505097}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC66F001-58FA-418E-ACA9-A683DE505097}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BAE751CC-7312-48F8-8275-20C37623E02E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BAE751CC-7312-48F8-8275-20C37623E02E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAE751CC-7312-48F8-8275-20C37623E02E}.Release|Any CPU.ActiveCfg = Release|Any CPU

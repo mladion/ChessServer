@@ -1,11 +1,31 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using Domain;
+using Domain.IRepository;
+using Domain.Repository;
+using Microsoft.EntityFrameworkCore;
+using Service.CustomServices;
+using Service.ICustomServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<ChessDbContext>(options =>
+       options.UseNpgsql(builder.Configuration.GetConnectionString("ChessDatabase")));
+
+builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1",
+    new Microsoft.OpenApi.Models.OpenApiInfo
+    { 
+        Title = "ProChess",
+        Version= "v1",
+    }));
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -26,8 +46,10 @@ app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
-app.UseRouting();
+app.UseSwagger();
+app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "ProChess"));
 
+app.UseRouting();
 
 app.MapRazorPages();
 app.MapControllers();
