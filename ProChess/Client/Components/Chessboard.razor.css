@@ -1,15 +1,16 @@
 ﻿#chessboard {
     display: flex;
     flex-wrap: wrap;
-    width: 800px;
-    height: 800px;
-    background-color: #779556;
+    width: 802px;
+    height: 802px;
+    border: 1px solid black;
 }
 
     #chessboard .field {
         display: flex;
         width: 100px;
         height: 100px;
+        border: 1px solid black;
         align-items: center;
         justify-content: center;
     }
