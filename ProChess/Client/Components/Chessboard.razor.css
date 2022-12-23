@@ -1,0 +1,23 @@
+﻿#chessboard {
+    display: flex;
+    flex-wrap: wrap;
+    width: 800px;
+    height: 800px;
+    background-color: #779556;
+}
+
+    #chessboard .field {
+        display: flex;
+        width: 100px;
+        height: 100px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #chessboard .white-field {
+        background-color: #ebecd0;
+    }
+
+    #chessboard .black-field {
+        background-color: #8f6c35;
+    }
