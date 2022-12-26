@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Client.Components
+namespace Client.Components.Board
 {
 	public partial class Chessboard
 	{

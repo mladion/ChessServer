@@ -1,0 +1,22 @@
+﻿<div id="chessboard">
+    @for (var line = VerticalAxis.Length - 1; line >= 0; line--)
+    {
+        for (var column = 0; column < HorizontalAxis.Length; column++)
+        {
+            /// <summary>
+            /// This amount determines the color of the field
+            /// <example>
+            /// For example:
+            /// <code>
+            /// var fieldColor = 1 + 1;
+            /// </code>
+            /// If the result of the sum is even, then it is a white field,
+            /// otherwise, it is a black field.
+            /// </example>
+            /// </summary>
+            var fieldColor = line + column;
+
+            <Field FieldColor="fieldColor" />
+        }
+    }
+</div>

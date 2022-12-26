@@ -1,0 +1,16 @@
+﻿.field {
+    display: flex;
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+    align-items: center;
+    justify-content: center;
+}
+
+.white-field {
+    background-color: #ebecd0;
+}
+
+.black-field {
+    background-color: #8f6c35;
+}
