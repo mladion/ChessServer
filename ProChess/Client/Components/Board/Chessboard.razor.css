@@ -1,6 +1,7 @@
 ﻿#chessboard {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(8, 100px);
+    grid-template-rows: repeat(8, 100px);
     width: 802px;
     height: 802px;
     border: 1px solid black;
