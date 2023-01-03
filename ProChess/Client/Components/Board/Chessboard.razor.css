@@ -6,3 +6,38 @@
     height: 802px;
     border: 1px solid black;
 }
+
+.cell {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    height: 80px;
+    width: 80px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+    .cell.active {
+        border: 3px solid red;
+    }
+
+.piece {
+    height: 70px;
+    width: 70px;
+}
+
+.row:nth-child(2n+1) .cell:nth-child(2n+1) {
+    background: #ebecd0;
+}
+
+.row:nth-child(2n+1) .cell:nth-child(2n) {
+    background: #8f6c35;
+}
+
+.row:nth-child(2n) .cell:nth-child(2n+1) {
+    background: #8f6c35;
+}
+
+.row:nth-child(2n) .cell:nth-child(2n) {
+    background: #ebecd0;
+}

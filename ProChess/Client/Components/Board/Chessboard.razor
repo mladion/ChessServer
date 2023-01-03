@@ -1,22 +1,24 @@
-﻿<div id="chessboard">
-    @for (var line = VerticalAxis.Length - 1; line >= 0; line--)
-    {
-        for (var column = 0; column < HorizontalAxis.Length; column++)
+﻿@for (var line = VerticalAxis.Length - 1; line >= 0; line--)
+{
+    int localLine = line;
+    <div class="row">
+        @for (var column = 0; column < HorizontalAxis.Length; column++)
         {
-            /// <summary>
-            /// This amount determines the color of the field
-            /// <example>
-            /// For example:
-            /// <code>
-            /// var fieldColor = 1 + 1;
-            /// </code>
-            /// If the result of the sum is even, then it is a black field,
-            /// otherwise, it is a white field.
-            /// </example>
-            /// </summary>
-            var fieldColor = line + column;
+            int localColumn = column;
+            var piece = BlackPieces.FirstOrDefault(x => x.StartPositionX == column && x.StartPositionY == line);
+            if (piece == null)
+            {
+                piece = WhitePieces.FirstOrDefault(x => x.StartPositionX == column && x.StartPositionY == line);
+            }
 
-            <Field FieldColor="fieldColor" />
+            bool canMoveHere = rowsPossible.Contains(line) && columnsPossible.Contains(column);
+
+            <div @onclick="() => MovePiece(localLine, localColumn)" class="cell @((piece == activePiece && piece != null) || canMoveHere ? "active" : "")">
+                @if (piece != null)
+                {
+                    <img @onclick="() => { activePiece = piece; EvaluatePieceSpots(); }" src="@piece.Image" class="piece" />
+                }
+            </div>
         }
-    }
-</div>
+    </div>
+}

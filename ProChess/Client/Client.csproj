@@ -25,6 +25,5 @@
   <ItemGroup>
     <Folder Include="Components\" />
     <Folder Include="Components\Board\" />
-    <Folder Include="Components\Board\Field\" />
   </ItemGroup>
 </Project>
