@@ -5,8 +5,8 @@
         public PieceType Name { get; set; }
         public PieceColor Color { get; set; }
         public PieceDirection Direction { get; set; }
-        public int StartPositionX { get; set; }
-        public int StartPositionY { get; set; }
+        public int StartColumn { get; set; }
+        public int StartLine { get; set; }
         public string Image { get; set; } = "";
     }
 }

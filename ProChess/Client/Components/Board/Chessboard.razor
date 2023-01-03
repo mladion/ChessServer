@@ -5,15 +5,16 @@
         @for (var column = 0; column < HorizontalAxis.Length; column++)
         {
             int localColumn = column;
-            var piece = BlackPieces.FirstOrDefault(x => x.StartPositionX == column && x.StartPositionY == line);
+            var piece = BlackPieces.FirstOrDefault(x => x.StartColumn == column && x.StartLine == line);
             if (piece == null)
             {
-                piece = WhitePieces.FirstOrDefault(x => x.StartPositionX == column && x.StartPositionY == line);
+                piece = WhitePieces.FirstOrDefault(x => x.StartColumn == column && x.StartLine == line);
             }
 
             bool canMoveHere = rowsPossible.Contains(line) && columnsPossible.Contains(column);
 
-            <div @onclick="() => MovePiece(localLine, localColumn)" class="cell @((piece == activePiece && piece != null) || canMoveHere ? "active" : "")">
+            <div @onclick="() => MovePiece(localLine, localColumn)"
+                 class="cell @((piece == activePiece && piece != null) || canMoveHere ? "active" : "")">
                 @if (piece != null)
                 {
                     <img @onclick="() => { activePiece = piece; EvaluatePieceSpots(); }" src="@piece.Image" class="piece" />

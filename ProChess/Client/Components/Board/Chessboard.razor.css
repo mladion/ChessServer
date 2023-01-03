@@ -11,8 +11,8 @@
     display: grid;
     align-content: center;
     justify-content: center;
-    height: 80px;
-    width: 80px;
+    height: 90px;
+    width: 90px;
     padding: 10px;
     border: 1px solid black;
 }
