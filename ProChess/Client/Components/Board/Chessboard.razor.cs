@@ -1,19 +1,20 @@
 ﻿using Client.Data;
+using Client.Rules;
 
 namespace Client.Components.Board
 {
     public partial class Chessboard
     {
+        Piece? activePiece = null;
+        List<int> rowsPossible = new List<int>();
+        List<int> columnsPossible = new List<int>();
+
         public readonly string[] HorizontalAxis = { "a", "b", "c", "d", "e", "f", "g", "h" };
         public readonly string[] VerticalAxis = { "1", "2", "3", "4", "5", "6", "7", "8" };
 
         public List<Piece> WhitePieces { get; set; } = new List<Piece>();
         public List<Piece> BlackPieces { get; set; } = new List<Piece>();
 
-        Piece? activePiece = null;
-
-        List<int> rowsPossible = new List<int>();
-        List<int> columnsPossible = new List<int>();
         protected override void OnInitialized()
         {
             for (int i = 0; i < 8; i++)
@@ -207,10 +208,28 @@ namespace Client.Components.Board
 
             if (activePiece != null)
             {
-                columnsPossible.Add(activePiece.StartColumn);
-
-                rowsPossible.Add(activePiece.StartLine + 1);
-                rowsPossible.Add(activePiece.StartLine + 2);
+                switch (activePiece.Name)
+                {
+                    case PieceType.Pawn:
+                        rowsPossible = Pawn.EvaluateRowsSpots(activePiece);
+                        columnsPossible = Pawn.EvaluateColumnsSpots(activePiece);
+                        break;
+                    case PieceType.Rook:
+                        // code block
+                        break;
+                    case PieceType.Knight:
+                        // code block
+                        break;
+                    case PieceType.Bishop:
+                        // code block
+                        break;
+                    case PieceType.Queen:
+                        // code block
+                        break;
+                    case PieceType.King:
+                        // code block
+                        break;
+                }
             }
         }
 
@@ -224,8 +243,27 @@ namespace Client.Components.Board
 
             if (activePiece != null)
             {
-                activePiece.StartColumn = column;
-                activePiece.StartLine = row;
+                switch (activePiece.Name)
+                {
+                    case PieceType.Pawn:
+                        activePiece = Pawn.Move(activePiece, row, column);
+                        break;
+                    case PieceType.Rook:
+                        // code block
+                        break;
+                    case PieceType.Knight:
+                        // code block
+                        break;
+                    case PieceType.Bishop: 
+                        // code block
+                        break;
+                    case PieceType.Queen: 
+                        // code block
+                        break;
+                    case PieceType.King:
+                        // code block
+                        break;
+                }
                 activePiece = null;
                 EvaluatePieceSpots();
             }
