@@ -14,11 +14,11 @@ namespace Client.Rules
 
             whitePieces = wPieces; blackPieces = bPieces;
 
-            EvaluateCell(piece.Direction == PieceDirection.Up ? piece.StartRow + 1 : piece.StartRow - 1, piece.StartColumn);
+            EvaluateCell(piece.Color == PieceColor.White ? piece.StartRow + 1 : piece.StartRow - 1, piece.StartColumn);
 
             if (cellsPossible.Any() && (piece.StartRow == 6 || piece.StartRow == 1))
             {
-                EvaluateCell(piece.Direction == PieceDirection.Up ? piece.StartRow + 2 : piece.StartRow - 2, piece.StartColumn);
+                EvaluateCell(piece.Color == PieceColor.White ? piece.StartRow + 2 : piece.StartRow - 2, piece.StartColumn);
             }
 
             return cellsPossible;

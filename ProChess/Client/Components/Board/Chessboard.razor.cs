@@ -22,7 +22,6 @@ namespace Client.Components.Board
                 {
                     Name = PieceType.Pawn,
                     Color = PieceColor.White,
-                    Direction = PieceDirection.Up,
                     Image = "/images/wP.svg",
                     StartColumn = i,
                     StartRow = 1
@@ -32,7 +31,6 @@ namespace Client.Components.Board
                 {
                     Name = PieceType.Pawn,
                     Color = PieceColor.Black,
-                    Direction = PieceDirection.Down,
                     Image = "/images/bP.svg",
                     StartColumn = i,
                     StartRow = 6
@@ -49,7 +47,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Rook,
                             Color = PieceColor.Black,
-                            Direction = PieceDirection.All,
                             Image = "/images/bR.svg",
                             StartColumn = 0,
                             StartRow = 7
@@ -58,7 +55,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Rook,
                             Color = PieceColor.Black,
-                            Direction = PieceDirection.All,
                             Image = "/images/bR.svg",
                             StartColumn = 7,
                             StartRow = 7
@@ -67,7 +63,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Knight,
                             Color = PieceColor.Black,
-                            Direction = PieceDirection.All,
                             Image = "/images/bN.svg",
                             StartColumn = 1,
                             StartRow = 7
@@ -76,7 +71,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Knight,
                             Color = PieceColor.Black,
-                            Direction = PieceDirection.All,
                             Image = "/images/bN.svg",
                             StartColumn = 6,
                             StartRow = 7
@@ -85,7 +79,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Bishop,
                             Color = PieceColor.Black,
-                            Direction = PieceDirection.All,
                             Image = "/images/bB.svg",
                             StartColumn = 2,
                             StartRow = 7
@@ -94,7 +87,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Bishop,
                             Color = PieceColor.Black,
-                            Direction = PieceDirection.All,
                             Image = "/images/bB.svg",
                             StartColumn = 5,
                             StartRow = 7
@@ -103,7 +95,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Queen,
                             Color = PieceColor.Black,
-                            Direction = PieceDirection.All,
                             Image = "/images/bQ.svg",
                             StartColumn = 3,
                             StartRow = 7
@@ -112,7 +103,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.King,
                             Color = PieceColor.Black,
-                            Direction = PieceDirection.All,
                             Image = "/images/bK.svg",
                             StartColumn = 4,
                             StartRow = 7
@@ -127,7 +117,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Rook,
                             Color = PieceColor.White,
-                            Direction = PieceDirection.All,
                             Image = "/images/wR.svg",
                             StartColumn = 0,
                             StartRow = 0
@@ -136,7 +125,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Rook,
                             Color = PieceColor.White,
-                            Direction = PieceDirection.All,
                             Image = "/images/wR.svg",
                             StartColumn = 7,
                             StartRow = 0
@@ -145,7 +133,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Knight,
                             Color = PieceColor.White,
-                            Direction = PieceDirection.All,
                             Image = "/images/wN.svg",
                             StartColumn = 1,
                             StartRow = 0
@@ -154,7 +141,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Knight,
                             Color = PieceColor.White,
-                            Direction = PieceDirection.All,
                             Image = "/images/wN.svg",
                             StartColumn = 6,
                             StartRow = 0
@@ -163,7 +149,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Bishop,
                             Color = PieceColor.White,
-                            Direction = PieceDirection.All,
                             Image = "/images/wB.svg",
                             StartColumn = 2,
                             StartRow = 0
@@ -172,7 +157,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Bishop,
                             Color = PieceColor.White,
-                            Direction = PieceDirection.All,
                             Image = "/images/wB.svg",
                             StartColumn = 5,
                             StartRow = 0
@@ -181,7 +165,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.Queen,
                             Color = PieceColor.White,
-                            Direction = PieceDirection.All,
                             Image = "/images/wQ.svg",
                             StartColumn = 3,
                             StartRow = 0
@@ -190,7 +173,6 @@ namespace Client.Components.Board
                         {
                             Name = PieceType.King,
                             Color = PieceColor.White,
-                            Direction = PieceDirection.All,
                             Image = "/images/wK.svg",
                             StartColumn = 4,
                             StartRow = 0
