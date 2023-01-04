@@ -4,31 +4,41 @@ namespace Client.Rules
 {
     public static class Pawn
     {
-        private static List<int> columnsPossible { get; set; } = new();
-        private static List<int> rowsPossible { get; set; } = new();
+        private static List<(int row, int column)> cellsPossible { get; set; } = new();
+        private static List<Piece> whitePieces { get; set; } = new();
+        private static List<Piece> blackPieces { get; set; } = new();
 
-        public static List<int> EvaluateColumnsSpots(Piece piece)
+        public static List<(int, int)> EvaluateCells(Piece piece, List<Piece> wPieces, List<Piece> bPieces)
         {
-            columnsPossible.Add(piece.StartColumn);
+            cellsPossible.Clear();
 
-            return columnsPossible;
-        }
+            whitePieces = wPieces; blackPieces = bPieces;
 
-        public static List<int> EvaluateRowsSpots(Piece piece)
-        {
-            rowsPossible.Add(piece.Color == PieceColor.White ? piece.StartLine + 1 : piece.StartLine - 1);
+            EvaluateCell(piece.Direction == PieceDirection.Up ? piece.StartRow + 1 : piece.StartRow - 1, piece.StartColumn);
 
-            if (piece.StartLine == 6 || piece.StartLine == 1)
+            if (cellsPossible.Any() && (piece.StartRow == 6 || piece.StartRow == 1))
             {
-                rowsPossible.Add(piece.Color == PieceColor.White ? piece.StartLine + 2 : piece.StartLine - 2);
+                EvaluateCell(piece.Direction == PieceDirection.Up ? piece.StartRow + 2 : piece.StartRow - 2, piece.StartColumn);
             }
 
-            return rowsPossible;
+            return cellsPossible;
+        }
+
+        private static void EvaluateCell(int row, int column)
+        {
+            var wPieces = whitePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+
+            var bPieces = blackPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+
+            if (wPieces == null && bPieces == null)
+            {
+                cellsPossible.Add((row, column));
+            }
         }
 
         public static Piece Move(Piece piece, int row, int column)
         {
-            piece.StartLine = row;
+            piece.StartRow = row;
             piece.StartColumn = column;
 
             return piece;

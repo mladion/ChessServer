@@ -1,19 +1,19 @@
-﻿@for (var line = VerticalAxis.Length - 1; line >= 0; line--)
+﻿@for (var row = VerticalAxis.Length - 1; row >= 0; row--)
 {
-    int localLine = line;
+    int localRow = row;
     <div class="row">
         @for (var column = 0; column < HorizontalAxis.Length; column++)
         {
             int localColumn = column;
-            var piece = BlackPieces.FirstOrDefault(x => x.StartColumn == column && x.StartLine == line);
+            var piece = BlackPieces.FirstOrDefault(x => x.StartColumn == column && x.StartRow == row);
             if (piece == null)
             {
-                piece = WhitePieces.FirstOrDefault(x => x.StartColumn == column && x.StartLine == line);
+                piece = WhitePieces.FirstOrDefault(x => x.StartColumn == column && x.StartRow == row);
             }
 
-            bool canMoveHere = rowsPossible.Contains(line) && columnsPossible.Contains(column);
+            bool canMoveHere = cellsPossible.Contains((localRow, localColumn));
 
-            <div @onclick="() => MovePiece(localLine, localColumn)"
+            <div @onclick="() => MovePiece(localRow, localColumn)"
                  class="cell @((piece == activePiece && piece != null) || canMoveHere ? "active" : "")">
                 @if (piece != null)
                 {
