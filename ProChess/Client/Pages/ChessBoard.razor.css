@@ -1,0 +1,40 @@
+﻿body {
+
+}
+
+.row {
+}
+
+.cell {
+    
+    height: 80px;
+    width: 80px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+        
+}
+
+.figures {
+    font-size: 60px;
+    cursor: pointer;
+}
+
+.row:nth-child(2n+1) .cell:nth-child(2n+1) {
+    background: tan;
+}
+
+.row:nth-child(2n+1) .cell:nth-child(2n) {
+    background: #eee;
+}
+
+.row:nth-child(2n) .cell:nth-child(2n+1) {
+    background: #eee;
+}
+
+.row:nth-child(2n) .cell:nth-child(2n) {
+    background: tan;
+}
+
+
+

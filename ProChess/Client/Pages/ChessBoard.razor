@@ -1,0 +1,78 @@
+﻿@page "/chessboard"
+@using Client.Pages
+
+@code{
+	  
+	List<ChessFigures> BlackFigures = new List<ChessFigures>();
+	List<ChessFigures> WhiteFigures = new List<ChessFigures>();
+
+	string[] Unicod = new string[2] { "&#9817;", "&#9823;" };
+
+	protected override void OnInitialized()
+	{
+	
+		for (int i = 0; i < 8; i++)
+		{
+			BlackFigures.Add(new ChessFigures { Name = "black_pawn", Row = 1, Column = i, Unicod = "&#9823;" });
+			WhiteFigures.Add(new ChessFigures { Name = "white_pawn", Row = 6, Column = i, Unicod = "&#9817;" });
+		}
+
+		BlackFigures.Add(new ChessFigures { Name = "black_rook", Row = 7, Column = 0, Unicod = "&#9814;" });
+		BlackFigures.Add(new ChessFigures { Name = "black_bishop", Row = 7, Column = 1, Unicod = "&#9815;" });
+		BlackFigures.Add(new ChessFigures { Name = "black_knights", Row = 7, Column = 2, Unicod = "&#9816;" });
+		BlackFigures.Add(new ChessFigures { Name = "black_king", Row = 7, Column = 4, Unicod = "&#9812;" });
+		BlackFigures.Add(new ChessFigures { Name = "black_queen", Row = 7, Column = 3, Unicod = "&#9813;" });
+		BlackFigures.Add(new ChessFigures { Name = "black_knights", Row = 7, Column = 5, Unicod = "&#9816;" });
+		BlackFigures.Add(new ChessFigures { Name = "black_bishop", Row = 7, Column = 6, Unicod = "&#9815;" });
+		BlackFigures.Add(new ChessFigures { Name = "black_rook", Row = 7, Column = 7, Unicod = "&#9814;" });
+
+		WhiteFigures.Add(new ChessFigures { Name = "white_rook", Row = 0, Column = 0, Unicod = "&#9820;" });
+		WhiteFigures.Add(new ChessFigures { Name = "white_bishop", Row = 0, Column = 2, Unicod = "&#9821;" });
+		WhiteFigures.Add(new ChessFigures { Name = "white_knight", Row = 0, Column = 1, Unicod = "&#9822;" });
+		WhiteFigures.Add(new ChessFigures { Name = "white_king", Row = 0, Column = 4, Unicod = "&#9818;" });
+		WhiteFigures.Add(new ChessFigures { Name = "white_queen", Row = 0, Column = 3, Unicod = "&#9819;" });
+		WhiteFigures.Add(new ChessFigures { Name = "white_knight", Row = 0, Column = 5, Unicod = "&#9822;" });
+		WhiteFigures.Add(new ChessFigures { Name = "white_bishop", Row = 0, Column = 6, Unicod = "&#9821;" });
+		WhiteFigures.Add(new ChessFigures { Name = "white_rook", Row = 0, Column = 7, Unicod = "&#9820;" });
+	}
+/*
+	<div class="figures">&#9812;</div>
+	<div class="figures" id="white_queen">&#9813;</div>
+	<div class="figures" id="white_rook">&#9814;</div>
+	<div class="figures" id="white_bishop">&#9815;</div>
+	<div class="figures" id="white_knight">&#9816;</div>
+	<div class="figures" id="white_pawn">&#9817;</div>
+	<div class="figures" id="black_king">&#9818;</div>
+	<div class="figures" id="black_queen">&#9819;</div>
+	<div class="figures" id="black_rook">&#9820;</div>
+	<div class="figures" id="black_bishop">&#9821;</div>
+	<div class="figures" id="black_knight">&#9822;</div>
+	<div class="figures" id="black_pawn">&#9823;</div>
+*/
+}
+
+<PageTitle>Chess Board</PageTitle>
+
+<h1>Chess Board</h1>
+
+
+@for (int i = 0; i < 8; i++)
+{
+	<div class="row">
+		@for (int j = 0; j < 8; j++)
+		{
+			var chess = BlackFigures.FirstOrDefault(n => n.Column == j && n.Row == i);
+			@if (chess == null)
+			{
+				chess = WhiteFigures.FirstOrDefault(n => n.Column == j && n.Row == i);
+			}
+			<div class="cell">
+				@if(chess != null)
+				{
+					<div class="figures">@System.Net.WebUtility.HtmlDecode(chess.Unicod)</div>
+				}
+			</div>
+		}
+	</div>
+}
+
