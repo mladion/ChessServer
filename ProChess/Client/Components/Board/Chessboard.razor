@@ -1,10 +1,12 @@
 ﻿@for (var row = VerticalAxis.Length - 1; row >= 0; row--)
 {
     int localRow = row;
-    <div class="row">
+
+    <div class="row flex-nowrap">
         @for (var column = 0; column < HorizontalAxis.Length; column++)
         {
             int localColumn = column;
+
             var piece = BlackPieces.FirstOrDefault(x => x.StartColumn == column && x.StartRow == row);
             if (piece == null)
             {
@@ -13,12 +15,14 @@
 
             bool canMoveHere = cellsPossible.Contains((localRow, localColumn));
 
-            <div @onclick="() => MovePiece(localRow, localColumn)"
-                 class="cell @((piece == activePiece && piece != null) || canMoveHere ? "active" : "")">
-                @if (piece != null)
-                {
-                    <img @onclick="() => { activePiece = piece; EvaluatePieceSpots(); }" src="@piece.Image" class="piece" />
-                }
+            <div @onclick="() => MoveOrAttackPiece(localRow, localColumn)" class="cell">
+                <div class="@(canMoveHere ? "active-cell" : "")">
+                    @if (piece != null)
+                    {
+                        <img @onclick="@(e => ClickOnPiece(e, piece))" src="@piece.Image" 
+                            class="piece @(piece == activePiece && piece != null ? "active" : "")" />
+                    }
+                </div>
             </div>
         }
     </div>

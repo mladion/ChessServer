@@ -1,5 +1,6 @@
 ﻿using Client.Data;
 using Client.Rules;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Client.Components.Board
 {
@@ -182,6 +183,23 @@ namespace Client.Components.Board
             }
         }
 
+        private void ClickOnPiece(MouseEventArgs e, Piece piece)
+        {
+            if (activePiece == piece)
+            {
+                activePiece = null;
+                EvaluatePieceSpots();
+
+                return;
+            }
+
+            if (activePiece == null) 
+            { 
+                activePiece = piece; 
+                EvaluatePieceSpots(); 
+            }
+        }
+
         private void EvaluatePieceSpots()
         {
             cellsPossible.Clear();
@@ -193,18 +211,23 @@ namespace Client.Components.Board
                     case PieceType.Pawn:
                         cellsPossible = Pawn.EvaluateCells(activePiece, WhitePieces, BlackPieces);
                         break;
+
                     case PieceType.Rook:
                         // code block
                         break;
+
                     case PieceType.Knight:
                         // code block
                         break;
+
                     case PieceType.Bishop:
                         // code block
                         break;
+
                     case PieceType.Queen:
                         // code block
                         break;
+
                     case PieceType.King:
                         // code block
                         break;
@@ -212,7 +235,7 @@ namespace Client.Components.Board
             }
         }
 
-        private void MovePiece(int row, int column)
+        private void MoveOrAttackPiece(int row, int column)
         {
             bool canMoveHere = cellsPossible.Contains((row, column));
             if (!canMoveHere)
@@ -225,20 +248,26 @@ namespace Client.Components.Board
                 switch (activePiece.Name)
                 {
                     case PieceType.Pawn:
-                        activePiece = Pawn.Move(activePiece, row, column);
+                        activePiece = Pawn.MoveOrAttack(activePiece, row, column, 
+                            activePiece.Color  == PieceColor.White ? BlackPieces : WhitePieces);
                         break;
+
                     case PieceType.Rook:
                         // code block
                         break;
+
                     case PieceType.Knight:
                         // code block
                         break;
+
                     case PieceType.Bishop: 
                         // code block
                         break;
+
                     case PieceType.Queen: 
                         // code block
                         break;
+
                     case PieceType.King:
                         // code block
                         break;
