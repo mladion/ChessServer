@@ -1,0 +1,43 @@
+﻿.cell {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    height: 5rem;
+    width: 5rem;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.active-cell {
+    height: 25px;
+    width: 25px;
+    background-color: #14551e;
+    opacity: 0.5;
+    border-radius: 50%;
+}
+
+.piece {
+    height: 80px;
+    width: 80px;
+}
+
+    .piece.active {
+        background: #14551e;
+        opacity: 0.5;
+    }
+
+.row:nth-child(2n+1) .cell:nth-child(2n+1) {
+    background: #f0d9b5;
+}
+
+.row:nth-child(2n+1) .cell:nth-child(2n) {
+    background: #b58863;
+}
+
+.row:nth-child(2n) .cell:nth-child(2n+1) {
+    background: #b58863;
+}
+
+.row:nth-child(2n) .cell:nth-child(2n) {
+    background: #f0d9b5;
+}
