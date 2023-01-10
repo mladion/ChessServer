@@ -62,7 +62,7 @@ namespace Client.Rules
             }
         }
 
-        public static Piece MoveOrAttack(Piece piece, int row, int column, List<Piece> pieces)
+        public static void MoveOrAttack(Piece piece, int row, int column, List<Piece> pieces)
         {
             var hasPiece = pieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
 
@@ -73,8 +73,6 @@ namespace Client.Rules
 
             piece.StartRow = row;
             piece.StartColumn = column;
-
-            return piece;
         }
     }
 }

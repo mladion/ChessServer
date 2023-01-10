@@ -13,17 +13,8 @@
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Blazored.Modal" Version="7.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.1" PrivateAssets="all" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Components\" />
-    <None Remove="Components\Board\" />
-    <None Remove="Components\Board\Field\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\" />
-    <Folder Include="Components\Board\" />
   </ItemGroup>
 </Project>

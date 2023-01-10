@@ -1,186 +1,32 @@
-﻿using Client.Data;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using Client.Data;
 using Client.Rules;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Client.Components.Board
 {
     public partial class Chessboard
     {
+        [CascadingParameter] 
+        IModalService Modal { get; set; } = default!;
         Piece? activePiece = null;
         List<(int row, int column)> cellsPossible = new();
 
         public readonly string[] HorizontalAxis = { "a", "b", "c", "d", "e", "f", "g", "h" };
         public readonly string[] VerticalAxis = { "1", "2", "3", "4", "5", "6", "7", "8" };
+        private static int[] _positionsTransformation = { 0, 7 };
 
         public List<Piece> WhitePieces { get; set; } = new List<Piece>();
         public List<Piece> BlackPieces { get; set; } = new List<Piece>();
 
         protected override void OnInitialized()
         {
-            for (int i = 0; i < 8; i++)
-            {
-                WhitePieces.Add(new Piece
-                {
-                    Name = PieceType.Pawn,
-                    Color = PieceColor.White,
-                    Image = "/images/wP.svg",
-                    StartColumn = i,
-                    StartRow = 1
-                });
+            GamePieces gamePieces = new GamePieces();
 
-                BlackPieces.Add(new Piece
-                {
-                    Name = PieceType.Pawn,
-                    Color = PieceColor.Black,
-                    Image = "/images/bP.svg",
-                    StartColumn = i,
-                    StartRow = 6
-                });
-            }
-
-            for (int i = 0; i < 2; i++)
-            {
-                if (i == 0)
-                {
-                    BlackPieces.AddRange(new List<Piece>
-                    {
-                        new Piece
-                        {
-                            Name = PieceType.Rook,
-                            Color = PieceColor.Black,
-                            Image = "/images/bR.svg",
-                            StartColumn = 0,
-                            StartRow = 7
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Rook,
-                            Color = PieceColor.Black,
-                            Image = "/images/bR.svg",
-                            StartColumn = 7,
-                            StartRow = 7
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Knight,
-                            Color = PieceColor.Black,
-                            Image = "/images/bN.svg",
-                            StartColumn = 1,
-                            StartRow = 7
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Knight,
-                            Color = PieceColor.Black,
-                            Image = "/images/bN.svg",
-                            StartColumn = 6,
-                            StartRow = 7
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Bishop,
-                            Color = PieceColor.Black,
-                            Image = "/images/bB.svg",
-                            StartColumn = 2,
-                            StartRow = 7
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Bishop,
-                            Color = PieceColor.Black,
-                            Image = "/images/bB.svg",
-                            StartColumn = 5,
-                            StartRow = 7
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Queen,
-                            Color = PieceColor.Black,
-                            Image = "/images/bQ.svg",
-                            StartColumn = 3,
-                            StartRow = 7
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.King,
-                            Color = PieceColor.Black,
-                            Image = "/images/bK.svg",
-                            StartColumn = 4,
-                            StartRow = 7
-                        }
-                    });
-                }
-                else
-                {
-                    WhitePieces.AddRange(new List<Piece>
-                    {
-                        new Piece
-                        {
-                            Name = PieceType.Rook,
-                            Color = PieceColor.White,
-                            Image = "/images/wR.svg",
-                            StartColumn = 0,
-                            StartRow = 0
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Rook,
-                            Color = PieceColor.White,
-                            Image = "/images/wR.svg",
-                            StartColumn = 7,
-                            StartRow = 0
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Knight,
-                            Color = PieceColor.White,
-                            Image = "/images/wN.svg",
-                            StartColumn = 1,
-                            StartRow = 0
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Knight,
-                            Color = PieceColor.White,
-                            Image = "/images/wN.svg",
-                            StartColumn = 6,
-                            StartRow = 0
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Bishop,
-                            Color = PieceColor.White,
-                            Image = "/images/wB.svg",
-                            StartColumn = 2,
-                            StartRow = 0
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Bishop,
-                            Color = PieceColor.White,
-                            Image = "/images/wB.svg",
-                            StartColumn = 5,
-                            StartRow = 0
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.Queen,
-                            Color = PieceColor.White,
-                            Image = "/images/wQ.svg",
-                            StartColumn = 3,
-                            StartRow = 0
-                        },
-                        new Piece
-                        {
-                            Name = PieceType.King,
-                            Color = PieceColor.White,
-                            Image = "/images/wK.svg",
-                            StartColumn = 4,
-                            StartRow = 0
-                        }
-                    });
-                }
-            }
+            BlackPieces = gamePieces.InitializationBlackPieces();
+            WhitePieces = gamePieces.InitializationWhitePieces();
         }
 
         private void ClickOnPiece(MouseEventArgs e, Piece piece)
@@ -193,10 +39,10 @@ namespace Client.Components.Board
                 return;
             }
 
-            if (activePiece == null) 
-            { 
-                activePiece = piece; 
-                EvaluatePieceSpots(); 
+            if (activePiece == null)
+            {
+                activePiece = piece;
+                EvaluatePieceSpots();
             }
         }
 
@@ -235,7 +81,7 @@ namespace Client.Components.Board
             }
         }
 
-        private void MoveOrAttackPiece(int row, int column)
+        private async Task MoveOrAttackPiece(int row, int column)
         {
             bool canMoveHere = cellsPossible.Contains((row, column));
             if (!canMoveHere)
@@ -248,8 +94,18 @@ namespace Client.Components.Board
                 switch (activePiece.Name)
                 {
                     case PieceType.Pawn:
-                        activePiece = Pawn.MoveOrAttack(activePiece, row, column, 
-                            activePiece.Color  == PieceColor.White ? BlackPieces : WhitePieces);
+                        Pawn.MoveOrAttack(activePiece, row, column,
+                            activePiece.Color == PieceColor.White ? BlackPieces : WhitePieces);
+
+                        if (activePiece.StartRow == _positionsTransformation[0] ||
+                            activePiece.StartRow == _positionsTransformation[1])
+                        {
+                            var transformingPiece = new ModalParameters()
+                                .Add(nameof(PawnTransformationPopUp.Piece), activePiece);
+                            var modal = Modal.Show<PawnTransformationPopUp>("Choose a piece!", transformingPiece);
+                            _ = await modal.Result;
+                        }
+
                         break;
 
                     case PieceType.Rook:
@@ -260,11 +116,11 @@ namespace Client.Components.Board
                         // code block
                         break;
 
-                    case PieceType.Bishop: 
+                    case PieceType.Bishop:
                         // code block
                         break;
 
-                    case PieceType.Queen: 
+                    case PieceType.Queen:
                         // code block
                         break;
 
