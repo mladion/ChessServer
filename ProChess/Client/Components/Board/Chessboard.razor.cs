@@ -14,9 +14,9 @@ namespace Client.Components.Board
         Piece? activePiece = null;
         List<(int row, int column)> cellsPossible = new();
 
-        public readonly string[] HorizontalAxis = { "a", "b", "c", "d", "e", "f", "g", "h" };
-        public readonly string[] VerticalAxis = { "1", "2", "3", "4", "5", "6", "7", "8" };
-        private static int[] _positionsTransformation = { 0, 7 };
+        private readonly string[] HorizontalAxis = { "a", "b", "c", "d", "e", "f", "g", "h" };
+        private readonly string[] VerticalAxis = { "1", "2", "3", "4", "5", "6", "7", "8" };
+        private readonly int[] _positionsTransformation = { 0, 7 };
 
         public List<Piece> WhitePieces { get; set; } = new List<Piece>();
         public List<Piece> BlackPieces { get; set; } = new List<Piece>();
