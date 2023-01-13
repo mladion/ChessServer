@@ -1,46 +1,46 @@
 ﻿using Client.Data;
+using Shared.Data;
 
 namespace Client.Rules
 {
-    public static class Pawn
+    public class Pawn : Piece
     {
-        private readonly static int[] _startingPositions = { 1, 6 };
+        private readonly int[] _startingPositions = { 1, 6 };
 
-        public static List<(int, int)> EvaluateCells(Piece piece, List<Piece> whitePieces, List<Piece> blackPieces)
+        public override List<Cell> EvaluateCells(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellsPossible = new List<(int, int)>();
+            var cellsPossible = new List<Cell>();
+            Cell? cellPossible = null;
 
-            (int, int)? move;
+            cellPossible = EvaluateCellForMovement(this.Color == PieceColor.White ? this.StartRow + 1 : this.StartRow - 1, this.StartColumn, whitePieces, blackPieces);
 
-            move = EvaluateCellForMovement(piece.Color == PieceColor.White ? piece.StartRow + 1 : piece.StartRow - 1, piece.StartColumn, whitePieces, blackPieces);
+            if (cellPossible != null)
+                cellsPossible.Add(cellPossible);
 
-            if (move != null)
-                cellsPossible.Add(move.Value);
-
-            if (cellsPossible.Any() && (piece.StartRow == _startingPositions[0] || piece.StartRow == _startingPositions[1]))
+            if (cellsPossible.Any() && (this.StartRow == _startingPositions[0] || this.StartRow == _startingPositions[1]))
             {
-                move = EvaluateCellForMovement(piece.Color == PieceColor.White ? piece.StartRow + 2 : piece.StartRow - 2, piece.StartColumn, whitePieces, blackPieces);
+                cellPossible = EvaluateCellForMovement(this.Color == PieceColor.White ? this.StartRow + 2 : this.StartRow - 2, this.StartColumn, whitePieces, blackPieces);
 
-                if (move != null)
-                    cellsPossible.Add(move.Value);
+                if (cellPossible != null)
+                    cellsPossible.Add(cellPossible);
             }
 
-            move = EvaluateCellForAttack(piece.Color == PieceColor.White ? piece.StartRow + 1 : piece.StartRow - 1, piece.StartColumn + 1, 
-                piece.Color == PieceColor.White ? blackPieces : whitePieces);
+            cellPossible = EvaluateCellForAttack(this.Color == PieceColor.White ? this.StartRow + 1 : this.StartRow - 1, this.StartColumn + 1,
+                this.Color == PieceColor.White ? blackPieces : whitePieces);
 
-            if (move != null)
-                cellsPossible.Add(move.Value);
+            if (cellPossible != null)
+                cellsPossible.Add(cellPossible);
 
-            move = EvaluateCellForAttack(piece.Color == PieceColor.White ? piece.StartRow + 1 : piece.StartRow - 1, piece.StartColumn - 1, 
-                piece.Color == PieceColor.White ? blackPieces : whitePieces);
+            cellPossible = EvaluateCellForAttack(this.Color == PieceColor.White ? this.StartRow + 1 : this.StartRow - 1, this.StartColumn - 1,
+                this.Color == PieceColor.White ? blackPieces : whitePieces);
 
-            if (move != null)
-                cellsPossible.Add(move.Value);
+            if (cellPossible != null)
+                cellsPossible.Add(cellPossible);
 
             return cellsPossible;
         }
 
-        private static (int, int)? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
+        private Cell? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             var whitePiece = whitePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
 
@@ -48,35 +48,10 @@ namespace Client.Rules
 
             if (whitePiece == null && blackPiece == null)
             {
-                return (row, column);
+                return new Cell(row, column);
             }
 
             return null;
-        }
-
-        private static (int, int)? EvaluateCellForAttack(int row, int column, List<Piece> pieces)
-        {
-            Piece? piece = pieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
-
-            if (piece != null)
-            {
-                return (row, column);
-            }
-
-            return null;
-        }
-
-        public static void MoveOrAttack(Piece piece, int row, int column, List<Piece> pieces)
-        {
-            var hasPiece = pieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
-
-            if (hasPiece != null)
-            {
-                pieces.Remove(hasPiece);
-            }
-
-            piece.StartRow = row;
-            piece.StartColumn = column;
         }
     }
 }

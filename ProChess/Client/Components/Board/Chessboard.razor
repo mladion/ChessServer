@@ -1,4 +1,6 @@
-﻿@for (var row = VerticalAxis.Length - 1; row >= 0; row--)
+﻿@using global::Shared.Data;
+
+@for (var row = VerticalAxis.Length - 1; row >= 0; row--)
 {
     int localRow = row;
 
@@ -13,9 +15,11 @@
                 piece = WhitePieces.FirstOrDefault(x => x.StartColumn == column && x.StartRow == row);
             }
 
-            bool canMoveHere = cellsPossible.Contains((localRow, localColumn));
+            Cell cell = new Cell(localRow, localColumn);
 
-            <div @onclick="() => MoveOrAttackPiece(localRow, localColumn)" class="cell">
+            bool canMoveHere = cellsPossible.Where(x => x.Row == cell.Row && x.Column == cell.Column).Any();
+
+            <div @onclick="() => MoveOrAttackPiece(cell)" class="cell">
                 <div class="@(canMoveHere ? "active-cell" : "")">
                     @if (piece != null)
                     {

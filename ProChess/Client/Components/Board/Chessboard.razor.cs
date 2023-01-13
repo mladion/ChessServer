@@ -4,15 +4,16 @@ using Client.Data;
 using Client.Rules;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Shared.Data;
 
 namespace Client.Components.Board
 {
     public partial class Chessboard
     {
-        [CascadingParameter] 
+        [CascadingParameter]
         IModalService Modal { get; set; } = default!;
         Piece? activePiece = null;
-        List<(int row, int column)> cellsPossible = new();
+        List<Cell> cellsPossible = new();
 
         private readonly string[] HorizontalAxis = { "a", "b", "c", "d", "e", "f", "g", "h" };
         private readonly string[] VerticalAxis = { "1", "2", "3", "4", "5", "6", "7", "8" };
@@ -52,38 +53,13 @@ namespace Client.Components.Board
 
             if (activePiece != null)
             {
-                switch (activePiece.Name)
-                {
-                    case PieceType.Pawn:
-                        cellsPossible = Pawn.EvaluateCells(activePiece, WhitePieces, BlackPieces);
-                        break;
-
-                    case PieceType.Rook:
-                        // code block
-                        break;
-
-                    case PieceType.Knight:
-                        // code block
-                        break;
-
-                    case PieceType.Bishop:
-                        // code block
-                        break;
-
-                    case PieceType.Queen:
-                        // code block
-                        break;
-
-                    case PieceType.King:
-                        // code block
-                        break;
-                }
+                cellsPossible = activePiece.EvaluateCells(WhitePieces, BlackPieces);
             }
         }
 
-        private async Task MoveOrAttackPiece(int row, int column)
+        private async Task MoveOrAttackPiece(Cell cell)
         {
-            bool canMoveHere = cellsPossible.Contains((row, column));
+            bool canMoveHere = cellsPossible.Where(x => x.Row == cell.Row && x.Column == cell.Column).Any();
             if (!canMoveHere)
             {
                 return;
@@ -91,43 +67,17 @@ namespace Client.Components.Board
 
             if (activePiece != null)
             {
-                switch (activePiece.Name)
+                activePiece.MoveOrAttack(cell, activePiece.Color == PieceColor.White ? BlackPieces : WhitePieces);
+
+                if (activePiece as Pawn != null && (activePiece.StartRow == _positionsTransformation[0] ||
+                    activePiece.StartRow == _positionsTransformation[1]))
                 {
-                    case PieceType.Pawn:
-                        Pawn.MoveOrAttack(activePiece, row, column,
-                            activePiece.Color == PieceColor.White ? BlackPieces : WhitePieces);
-
-                        if (activePiece.StartRow == _positionsTransformation[0] ||
-                            activePiece.StartRow == _positionsTransformation[1])
-                        {
-                            var transformingPiece = new ModalParameters()
-                                .Add(nameof(PawnTransformationPopUp.Piece), activePiece);
-                            var modal = Modal.Show<PawnTransformationPopUp>("Choose a piece!", transformingPiece);
-                            _ = await modal.Result;
-                        }
-
-                        break;
-
-                    case PieceType.Rook:
-                        // code block
-                        break;
-
-                    case PieceType.Knight:
-                        // code block
-                        break;
-
-                    case PieceType.Bishop:
-                        // code block
-                        break;
-
-                    case PieceType.Queen:
-                        // code block
-                        break;
-
-                    case PieceType.King:
-                        // code block
-                        break;
+                    var transformingPiece = new ModalParameters()
+                        .Add(nameof(PawnTransformationPopUp.Piece), activePiece);
+                    var modal = Modal.Show<PawnTransformationPopUp>("Choose a piece!", transformingPiece);
+                    _ = await modal.Result;
                 }
+
                 activePiece = null;
                 EvaluatePieceSpots();
             }
