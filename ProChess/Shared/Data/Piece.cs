@@ -1,6 +1,7 @@
 ﻿using Shared.Data;
+using Shared.Rules;
 
-namespace Client.Data
+namespace Shared.Data
 {
     public abstract class Piece
     {
@@ -11,11 +12,21 @@ namespace Client.Data
 
         public abstract List<Cell> EvaluateCells(List<Piece> whitePieces, List<Piece> blackPieces);
 
-        public Cell? EvaluateCellForAttack(int row, int column, List<Piece> pieces)
+        public Cell? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            Piece? piece = pieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+            var whitePiece = whitePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
 
-            if (piece != null)
+            var blackPiece = blackPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+
+            if (whitePiece == null && blackPiece == null)
+            {
+                return new Cell(row, column);
+            }
+            else if (this as Pawn == null && this.Color == PieceColor.White && blackPiece != null)
+            {
+                return new Cell(row, column);
+            }
+            else if (this as Pawn == null && this.Color == PieceColor.Black && whitePiece != null)
             {
                 return new Cell(row, column);
             }

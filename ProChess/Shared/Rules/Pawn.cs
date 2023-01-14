@@ -1,7 +1,6 @@
-﻿using Client.Data;
-using Shared.Data;
+﻿using Shared.Data;
 
-namespace Client.Rules
+namespace Shared.Rules
 {
     public class Pawn : Piece
     {
@@ -40,13 +39,11 @@ namespace Client.Rules
             return cellsPossible;
         }
 
-        private Cell? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
+        public Cell? EvaluateCellForAttack(int row, int column, List<Piece> pieces)
         {
-            var whitePiece = whitePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+            Piece? piece = pieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
 
-            var blackPiece = blackPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
-
-            if (whitePiece == null && blackPiece == null)
+            if (piece != null)
             {
                 return new Cell(row, column);
             }

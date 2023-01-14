@@ -1,4 +1,4 @@
-﻿namespace Client.Data
+﻿namespace Shared.Data
 {
     public enum PieceColor
     {

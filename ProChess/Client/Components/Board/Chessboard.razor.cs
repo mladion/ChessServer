@@ -1,10 +1,9 @@
 ﻿using Blazored.Modal;
 using Blazored.Modal.Services;
-using Client.Data;
-using Client.Rules;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Shared.Data;
+using Shared.Rules;
 
 namespace Client.Components.Board
 {
@@ -12,6 +11,7 @@ namespace Client.Components.Board
     {
         [CascadingParameter]
         IModalService Modal { get; set; } = default!;
+
         Piece? activePiece = null;
         List<Cell> cellsPossible = new();
 

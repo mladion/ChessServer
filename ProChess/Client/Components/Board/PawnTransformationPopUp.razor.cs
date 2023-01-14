@@ -1,6 +1,6 @@
 ﻿using Blazored.Modal;
-using Client.Data;
 using Microsoft.AspNetCore.Components;
+using Shared.Data;
 
 namespace Client.Components.Board
 {
