@@ -24,11 +24,11 @@ namespace Shared.Data
             }
             else if (this as Pawn == null && this.Color == PieceColor.White && blackPiece != null)
             {
-                return new Cell(row, column);
+                return new Cell(row, column, true);
             }
             else if (this as Pawn == null && this.Color == PieceColor.Black && whitePiece != null)
             {
-                return new Cell(row, column);
+                return new Cell(row, column, true);
             }
 
             return null;

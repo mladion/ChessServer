@@ -52,22 +52,20 @@ namespace Shared.Data
                     StartColumn = 6,
                     StartRow = 0
                 },
-                //new Piece
-                //{
-                //    Name = PieceType.Bishop,
-                //    Color = PieceColor.White,
-                //    Image = "/images/wB.svg",
-                //    StartColumn = 2,
-                //    StartRow = 0
-                //},
-                //new Piece
-                //{
-                //    Name = PieceType.Bishop,
-                //    Color = PieceColor.White,
-                //    Image = "/images/wB.svg",
-                //    StartColumn = 5,
-                //    StartRow = 0
-                //},
+                new Bishop
+                {
+                    Color = PieceColor.White,
+                    Image = "/images/wB.svg",
+                    StartColumn = 2,
+                    StartRow = 0
+                },
+                new Bishop
+                {
+                    Color = PieceColor.White,
+                    Image = "/images/wB.svg",
+                    StartColumn = 5,
+                    StartRow = 0
+                },
                 //new Piece
                 //{
                 //    Name = PieceType.Queen,
@@ -134,22 +132,20 @@ namespace Shared.Data
                     StartColumn = 6,
                     StartRow = 7
                 },
-                //new Piece
-                //{
-                //    Name = PieceType.Bishop,
-                //    Color = PieceColor.Black,
-                //    Image = "/images/bB.svg",
-                //    StartColumn = 2,
-                //    StartRow = 7
-                //},
-                //new Piece
-                //{
-                //    Name = PieceType.Bishop,
-                //    Color = PieceColor.Black,
-                //    Image = "/images/bB.svg",
-                //    StartColumn = 5,
-                //    StartRow = 7
-                //},
+                new Bishop
+                {
+                    Color = PieceColor.Black,
+                    Image = "/images/bB.svg",
+                    StartColumn = 2,
+                    StartRow = 7
+                },
+                new Bishop
+                {
+                    Color = PieceColor.Black,
+                    Image = "/images/bB.svg",
+                    StartColumn = 5,
+                    StartRow = 7
+                },
                 //new Piece
                 //{
                 //    Name = PieceType.Queen,
