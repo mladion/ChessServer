@@ -8,8 +8,8 @@ namespace Shared.Rules
 
         public override List<Cell> EvaluateCells(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellsPossible = new List<Cell>();
             Cell? cellPossible = null;
+            List<Cell> cellsPossible = new();
 
             cellPossible = EvaluateCellForMovement(this.Color == PieceColor.White ? this.StartRow + 1 : this.StartRow - 1, this.StartColumn, whitePieces, blackPieces);
 

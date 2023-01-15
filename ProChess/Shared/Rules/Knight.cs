@@ -7,8 +7,8 @@ namespace Shared.Rules
 	{
         public override List<Cell> EvaluateCells(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellsPossible = new List<Cell>();
             Cell? cellPossible = null;
+            List<Cell> cellsPossible = new();
 
             cellPossible = EvaluateCellForMovement(this.StartRow + 2, StartColumn + 1, whitePieces, blackPieces);
             if (cellPossible != null)
@@ -46,4 +46,3 @@ namespace Shared.Rules
         }
     }
 }
-

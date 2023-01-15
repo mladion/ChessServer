@@ -22,22 +22,20 @@ namespace Shared.Data
 
             _whitePieces.AddRange(new List<Piece>
             {
-                //new Piece
-                //{
-                //    Name = PieceType.Rook,
-                //    Color = PieceColor.White,
-                //    Image = "/images/wR.svg",
-                //    StartColumn = 0,
-                //    StartRow = 0
-                //},
-                //new Piece
-                //{
-                //    Name = PieceType.Rook,
-                //    Color = PieceColor.White,
-                //    Image = "/images/wR.svg",
-                //    StartColumn = 7,
-                //    StartRow = 0
-                //},
+                new Rook
+                {
+                    Color = PieceColor.White,
+                    Image = "/images/wR.svg",
+                    StartColumn = 0,
+                    StartRow = 0
+                },
+                new Rook
+                {
+                    Color = PieceColor.White,
+                    Image = "/images/wR.svg",
+                    StartColumn = 7,
+                    StartRow = 0
+                },
                 new Knight
                 {
                     Color = PieceColor.White,
@@ -66,22 +64,20 @@ namespace Shared.Data
                     StartColumn = 5,
                     StartRow = 0
                 },
-                //new Piece
-                //{
-                //    Name = PieceType.Queen,
-                //    Color = PieceColor.White,
-                //    Image = "/images/wQ.svg",
-                //    StartColumn = 3,
-                //    StartRow = 0
-                //},
-                //new Piece
-                //{
-                //    Name = PieceType.King,
-                //    Color = PieceColor.White,
-                //    Image = "/images/wK.svg",
-                //    StartColumn = 4,
-                //    StartRow = 0
-                //}
+                new Queen
+                {
+                    Color = PieceColor.White,
+                    Image = "/images/wQ.svg",
+                    StartColumn = 3,
+                    StartRow = 0
+                },
+                new King
+                {
+                    Color = PieceColor.White,
+                    Image = "/images/wK.svg",
+                    StartColumn = 4,
+                    StartRow = 0
+                }
             });
 
             return _whitePieces;
@@ -102,22 +98,20 @@ namespace Shared.Data
 
             _blackPieces.AddRange(new List<Piece>
             {
-                //new Piece
-                //{
-                //    Name = PieceType.Rook,
-                //    Color = PieceColor.Black,
-                //    Image = "/images/bR.svg",
-                //    StartColumn = 0,
-                //    StartRow = 7
-                //},
-                //new Piece
-                //{
-                //    Name = PieceType.Rook,
-                //    Color = PieceColor.Black,
-                //    Image = "/images/bR.svg",
-                //    StartColumn = 7,
-                //    StartRow = 7
-                //},
+                new Rook
+                {
+                    Color = PieceColor.Black,
+                    Image = "/images/bR.svg",
+                    StartColumn = 0,
+                    StartRow = 7
+                },
+                new Rook
+                {
+                    Color = PieceColor.Black,
+                    Image = "/images/bR.svg",
+                    StartColumn = 7,
+                    StartRow = 7
+                },
                 new Knight
                 {
                     Color = PieceColor.Black,
@@ -146,22 +140,20 @@ namespace Shared.Data
                     StartColumn = 5,
                     StartRow = 7
                 },
-                //new Piece
-                //{
-                //    Name = PieceType.Queen,
-                //    Color = PieceColor.Black,
-                //    Image = "/images/bQ.svg",
-                //    StartColumn = 3,
-                //    StartRow = 7
-                //},
-                //new Piece
-                //{
-                //    Name = PieceType.King,
-                //    Color = PieceColor.Black,
-                //    Image = "/images/bK.svg",
-                //    StartColumn = 4,
-                //    StartRow = 7
-                //}
+                new Queen
+                {
+                    Color = PieceColor.Black,
+                    Image = "/images/bQ.svg",
+                    StartColumn = 3,
+                    StartRow = 7
+                },
+                new King
+                {
+                    Color = PieceColor.Black,
+                    Image = "/images/bK.svg",
+                    StartColumn = 4,
+                    StartRow = 7
+                }
             });
 
             return _blackPieces;
