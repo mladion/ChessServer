@@ -75,7 +75,19 @@ namespace Client.Components.Board
                     var transformingPiece = new ModalParameters()
                         .Add(nameof(PawnTransformationPopUp.Piece), activePiece);
                     var modal = Modal.Show<PawnTransformationPopUp>("Choose a piece!", transformingPiece);
-                    _ = await modal.Result;
+                    var infoPiece = await modal.Result;
+                    var newPiece = (infoPiece.Data as Piece) ?? throw new InvalidOperationException("Bad");
+
+                    if (activePiece.Color == PieceColor.White) 
+                    {
+                        WhitePieces.Remove(activePiece);
+                        WhitePieces.Add(newPiece);
+                    }
+                    else
+                    {
+                        BlackPieces.Remove(activePiece);
+                        BlackPieces.Add(newPiece);
+                    }
                 }
 
                 activePiece = null;
