@@ -1,0 +1,50 @@
+﻿using Shared.Data;
+using Shared.Rules;
+
+namespace Shared.Data
+{
+    public abstract class Piece
+    {
+        public PieceColor Color { get; set; }
+        public int StartRow { get; set; }
+        public int StartColumn { get; set; }
+        public string Image { get; set; } = "";
+
+        public abstract List<Cell> EvaluateCells(List<Piece> whitePieces, List<Piece> blackPieces);
+
+        public Cell? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
+        {
+            var whitePiece = whitePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+
+            var blackPiece = blackPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+
+            if (whitePiece == null && blackPiece == null)
+            {
+                return new Cell(row, column);
+            }
+            else if (this as Pawn == null && this.Color == PieceColor.White && blackPiece != null)
+            {
+                return new Cell(row, column, true);
+            }
+            else if (this as Pawn == null && this.Color == PieceColor.Black && whitePiece != null)
+            {
+                return new Cell(row, column, true);
+            }
+
+            return null;
+        }
+
+        public void MoveOrAttack(Cell cell, List<Piece> pieces)
+        {
+            var hasPiece = pieces.FirstOrDefault(x => x.StartRow == cell.Row && x.StartColumn == cell.Column);
+
+            if (hasPiece != null)
+            {
+                pieces.Remove(hasPiece);
+            }
+
+            this.StartRow = cell.Row;
+            this.StartColumn = cell.Column;
+        }
+    }
+}

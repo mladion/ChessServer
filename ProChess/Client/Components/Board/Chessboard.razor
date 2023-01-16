@@ -1,0 +1,33 @@
+﻿@using global::Shared.Data;
+
+@for (var row = VerticalAxis.Length - 1; row >= 0; row--)
+{
+    int localRow = row;
+
+    <div class="row flex-nowrap">
+        @for (var column = 0; column < HorizontalAxis.Length; column++)
+        {
+            int localColumn = column;
+
+            var piece = BlackPieces.FirstOrDefault(x => x.StartColumn == column && x.StartRow == row);
+            if (piece == null)
+            {
+                piece = WhitePieces.FirstOrDefault(x => x.StartColumn == column && x.StartRow == row);
+            }
+
+            Cell cell = new Cell(localRow, localColumn);
+
+            bool canMoveHere = cellsPossible.Where(x => x.Row == cell.Row && x.Column == cell.Column).Any();
+
+            <div @onclick="() => MoveOrAttackPiece(cell)" class="cell">
+                <div class="@(canMoveHere ? "active-cell" : "")">
+                    @if (piece != null)
+                    {
+                        <img @onclick="@(e => ClickOnPiece(e, piece))" src="@piece.Image" 
+                            class="piece @(piece == activePiece && piece != null ? "active" : "")" />
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

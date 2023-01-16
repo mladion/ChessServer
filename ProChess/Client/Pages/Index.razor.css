@@ -1,0 +1,4 @@
+﻿#app {
+    display: grid;
+    place-content: center;
+}
