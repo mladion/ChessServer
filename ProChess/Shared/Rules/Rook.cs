@@ -1,6 +1,4 @@
-﻿using System;
-using Shared.Data;
-using System.Data.Common;
+﻿using Shared.Data;
 
 namespace Shared.Rules
 {

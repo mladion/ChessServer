@@ -1,9 +1,8 @@
-﻿using System;
-using Shared.Data;
+﻿using Shared.Data;
 
 namespace Shared.Rules
 {
-	public class Knight : Piece
+    public class Knight : Piece
 	{
         public override List<Cell> EvaluateCells(List<Piece> whitePieces, List<Piece> blackPieces)
         {
