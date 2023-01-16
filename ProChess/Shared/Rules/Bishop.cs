@@ -5,6 +5,7 @@ namespace Shared.Rules
     public class Bishop : Piece
     {
         private readonly int[] _edgeBoard = { 0, 7 };
+        private readonly int[] _directionOffsets = { 1, -1};
 
         public override List<Cell> EvaluateCells(List<Piece> whitePieces, List<Piece> blackPieces)
         {
@@ -13,7 +14,7 @@ namespace Shared.Rules
             List<Cell> cellsPossible = new();
 
             // checking the possibilities in the upper left
-            for (var row = this.StartRow + 1; row <= _edgeBoard[1]; row++)
+            for (var row = this.StartRow + _directionOffsets[0]; row <= _edgeBoard[1]; row++)
             {
                 if (column < _edgeBoard[0])
                     break;
@@ -31,9 +32,9 @@ namespace Shared.Rules
             }
 
             // checking the possibilities in the upper right
-            for (var row = this.StartRow + 1; row <= _edgeBoard[1]; row++)
+            for (var row = this.StartRow + _directionOffsets[0]; row <= _edgeBoard[1]; row++)
             {
-                if (row == this.StartRow + 1)
+                if (row == this.StartRow + _directionOffsets[0])
                     column = this.StartColumn;
 
                 if (column > _edgeBoard[1])
@@ -52,9 +53,9 @@ namespace Shared.Rules
             }
 
             // checking the possibilities in the lower left
-            for (var row = this.StartRow - 1; row >= _edgeBoard[0]; row--)
+            for (var row = this.StartRow + _directionOffsets[1]; row >= _edgeBoard[0]; row--)
             {
-                if (row == this.StartRow - 1)
+                if (row == this.StartRow + _directionOffsets[1])
                     column = this.StartColumn;
 
                 if (column < _edgeBoard[0])
@@ -73,9 +74,9 @@ namespace Shared.Rules
             }
 
             // checking the possibilities in the lower right
-            for (var row = this.StartRow - 1; row >= _edgeBoard[0]; row--)
+            for (var row = this.StartRow + _directionOffsets[1]; row >= _edgeBoard[0]; row--)
             {
-                if (row == this.StartRow - 1)
+                if (row == this.StartRow + _directionOffsets[1])
                     column = this.StartColumn;
 
                 if (column > _edgeBoard[1])
