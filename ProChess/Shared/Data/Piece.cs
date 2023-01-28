@@ -1,5 +1,4 @@
-﻿using Shared.Data;
-using Shared.Rules;
+﻿using Shared.Rules;
 
 namespace Shared.Data
 {
