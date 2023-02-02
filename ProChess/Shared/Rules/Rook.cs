@@ -7,7 +7,7 @@ namespace Shared.Rules
         private readonly int[] _edgeBoard = { 0, 7 };
         private readonly int[] _directionOffsets = { 1, -1};
 
-        public override List<Cell> EvaluateCells(List<Piece> whitePieces, List<Piece> blackPieces)
+        public override List<Cell> GetMovementPossibilities(List<Piece> whitePieces, List<Piece> blackPieces)
         {
             Cell? cellPossible = null;
             List<Cell> cellsPossible = new();

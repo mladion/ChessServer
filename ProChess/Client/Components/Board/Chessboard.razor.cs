@@ -15,19 +15,19 @@ namespace Client.Components.Board
         Piece? activePiece = null;
         List<Cell> cellsPossible = new();
 
-        private readonly string[] HorizontalAxis = { "a", "b", "c", "d", "e", "f", "g", "h" };
-        private readonly string[] VerticalAxis = { "1", "2", "3", "4", "5", "6", "7", "8" };
+        private readonly string[] _horizontalAxis = { "a", "b", "c", "d", "e", "f", "g", "h" };
+        private readonly string[] _verticalAxis = { "1", "2", "3", "4", "5", "6", "7", "8" };
         private readonly int[] _positionsTransformation = { 0, 7 };
 
-        public List<Piece> WhitePieces { get; set; } = new List<Piece>();
-        public List<Piece> BlackPieces { get; set; } = new List<Piece>();
+        private List<Piece> _whitePieces { get; set; } = new List<Piece>();
+        private List<Piece> _blackPieces { get; set; } = new List<Piece>();
 
         protected override void OnInitialized()
         {
             GamePieces gamePieces = new GamePieces();
 
-            BlackPieces = gamePieces.InitializationBlackPieces();
-            WhitePieces = gamePieces.InitializationWhitePieces();
+            _blackPieces = gamePieces.InitializationBlackPieces();
+            _whitePieces = gamePieces.InitializationWhitePieces();
         }
 
         private void ClickOnPiece(MouseEventArgs e, Piece piece)
@@ -53,7 +53,7 @@ namespace Client.Components.Board
 
             if (activePiece != null)
             {
-                cellsPossible = activePiece.EvaluateCells(WhitePieces, BlackPieces);
+                cellsPossible = activePiece.GetMovementPossibilities(_whitePieces, _blackPieces);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Client.Components.Board
 
             if (activePiece != null)
             {
-                activePiece.MoveOrAttack(cell, activePiece.Color == PieceColor.White ? BlackPieces : WhitePieces);
+                activePiece.MoveOrAttack(cell, activePiece.Color == PieceColor.White ? _blackPieces : _whitePieces);
 
                 if (activePiece as Pawn != null && (activePiece.StartRow == _positionsTransformation[0] ||
                     activePiece.StartRow == _positionsTransformation[1]))
@@ -80,13 +80,13 @@ namespace Client.Components.Board
 
                     if (activePiece.Color == PieceColor.White) 
                     {
-                        WhitePieces.Remove(activePiece);
-                        WhitePieces.Add(newPiece);
+                        _whitePieces.Remove(activePiece);
+                        _whitePieces.Add(newPiece);
                     }
                     else
                     {
-                        BlackPieces.Remove(activePiece);
-                        BlackPieces.Add(newPiece);
+                        _blackPieces.Remove(activePiece);
+                        _blackPieces.Add(newPiece);
                     }
                 }
 

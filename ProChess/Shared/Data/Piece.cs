@@ -1,6 +1,4 @@
-﻿using Shared.Rules;
-
-namespace Shared.Data
+﻿namespace Shared.Data
 {
     public abstract class Piece
     {
@@ -9,23 +7,22 @@ namespace Shared.Data
         public int StartColumn { get; set; }
         public string Image { get; set; } = "";
 
-        public abstract List<Cell> EvaluateCells(List<Piece> whitePieces, List<Piece> blackPieces);
+        public abstract List<Cell> GetMovementPossibilities(List<Piece> whitePieces, List<Piece> blackPieces);
 
-        public Cell? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
+        public virtual Cell? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             var whitePiece = whitePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
-
             var blackPiece = blackPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
 
             if (whitePiece == null && blackPiece == null)
             {
                 return new Cell(row, column);
             }
-            else if (this as Pawn == null && this.Color == PieceColor.White && blackPiece != null)
+            else if (this.Color == PieceColor.White && blackPiece != null)
             {
                 return new Cell(row, column, true);
             }
-            else if (this as Pawn == null && this.Color == PieceColor.Black && whitePiece != null)
+            else if (this.Color == PieceColor.Black && whitePiece != null)
             {
                 return new Cell(row, column, true);
             }
