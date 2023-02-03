@@ -11,20 +11,23 @@
 
         public virtual Cell? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var whitePiece = whitePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
-            var blackPiece = blackPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+            if (row >= 0 && column >= 0 && row <= 7 && column <= 7)
+            {
+                var whitePiece = whitePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+                var blackPiece = blackPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
 
-            if (whitePiece == null && blackPiece == null)
-            {
-                return new Cell(row, column);
-            }
-            else if (this.Color == PieceColor.White && blackPiece != null)
-            {
-                return new Cell(row, column, true);
-            }
-            else if (this.Color == PieceColor.Black && whitePiece != null)
-            {
-                return new Cell(row, column, true);
+                if (whitePiece == null && blackPiece == null)
+                {
+                    return new Cell(row, column);
+                }
+                else if (this.Color == PieceColor.White && blackPiece != null)
+                {
+                    return new Cell(row, column, true);
+                }
+                else if (this.Color == PieceColor.Black && whitePiece != null)
+                {
+                    return new Cell(row, column, true);
+                }
             }
 
             return null;
