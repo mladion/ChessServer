@@ -12,9 +12,9 @@ namespace Shared.Rules
         {
             List<Cell> cellsPossible = new();
 
-            CheckTheFrontMovement(cellsPossible, whitePieces, blackPieces);
-            CheckTheSpecialFrontMovement(cellsPossible, whitePieces, blackPieces);
-            CheckTheMovementsOfTheDiagonals(cellsPossible, whitePieces, blackPieces);
+            CheckTheFrontMove(cellsPossible, whitePieces, blackPieces);
+            CheckTheSpecialFrontMove(cellsPossible, whitePieces, blackPieces);
+            CheckTheMovesOfTheDiagonals(cellsPossible, whitePieces, blackPieces);
 
             return cellsPossible;
         }
@@ -32,7 +32,7 @@ namespace Shared.Rules
             return null;
         }
 
-        private void CheckTheFrontMovement(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private void CheckTheFrontMove(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             Cell? cellPossible = null;
 
@@ -48,7 +48,7 @@ namespace Shared.Rules
             cellsPossible.AddCell(cellPossible);
         }
 
-        private void CheckTheSpecialFrontMovement(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private void CheckTheSpecialFrontMove(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             Cell? cellPossible = null;
 
@@ -67,7 +67,7 @@ namespace Shared.Rules
             }
         }
 
-        private void CheckTheMovementsOfTheDiagonals(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private void CheckTheMovesOfTheDiagonals(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             Cell? cellPossible = null;
 

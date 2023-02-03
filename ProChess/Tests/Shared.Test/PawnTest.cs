@@ -29,7 +29,7 @@ namespace Shared.Test
             // assert
             result.Should().NotBeNullOrEmpty();
             result.Should().HaveCount(1);
-            result.Select(x => x.ContainsPiece).Should().Equal(false);
+            result.Where(x => x.ContainsPiece == false).Should().HaveCount(1);
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace Shared.Test
             // assert
             result.Should().NotBeNullOrEmpty();
             result.Should().HaveCount(2);
-            result.Select(x => x.ContainsPiece == false).Should().HaveCount(2);
+            result.Where(x => x.ContainsPiece == false).Should().HaveCount(2);
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace Shared.Test
             // assert
             result.Should().NotBeNullOrEmpty();
             result.Should().HaveCount(1);
-            result.Select(x => x.ContainsPiece).Should().Equal(true);
+            result.Where(x => x.ContainsPiece == true).Should().HaveCount(1);
         }
 
         [Test]
@@ -74,6 +74,8 @@ namespace Shared.Test
             // assert
             result.Should().NotBeNullOrEmpty();
             result.Should().HaveCount(2);
+            result.Where(x => x.ContainsPiece == false).Should().HaveCount(1);
+            result.Where(x => x.ContainsPiece == true).Should().HaveCount(1);
         }
 
         [Test]
@@ -101,7 +103,7 @@ namespace Shared.Test
             // assert
             result.Should().NotBeNullOrEmpty();
             result.Should().HaveCount(1);
-            result.Select(x => x.ContainsPiece).Should().Equal(false);
+            result.Where(x => x.ContainsPiece == false).Should().HaveCount(1);
         }
 
         [Test]
@@ -117,7 +119,7 @@ namespace Shared.Test
             result.Should().NotBeNullOrEmpty();
             // to do En Passant Move -> change HaveCount(2)
             result.Should().HaveCount(1);
-            result.Select(x => x.ContainsPiece == false).Should().HaveCount(1);
+            result.Where(x => x.ContainsPiece == false).Should().HaveCount(1);
         }
 
         [Test]
@@ -132,7 +134,7 @@ namespace Shared.Test
             // assert
             result.Should().NotBeNullOrEmpty();
             result.Should().HaveCount(1);
-            result.Select(x => x.ContainsPiece).Should().Equal(true);
+            result.Where(x => x.ContainsPiece == true).Should().HaveCount(1);
         }
 
         [Test]
@@ -147,6 +149,8 @@ namespace Shared.Test
             // assert
             result.Should().NotBeNullOrEmpty();
             result.Should().HaveCount(3);
+            result.Where(x => x.ContainsPiece == false).Should().HaveCount(2);
+            result.Where(x => x.ContainsPiece == true).Should().HaveCount(1);
         }
 
         [Test]

@@ -166,7 +166,7 @@ namespace Shared.Test
                     Color = PieceColor.Black,
                     Image = "/images/bR.svg",
                     StartRow = 7,
-                    StartColumn = 0
+                    StartColumn = 3
                 },
                 new Rook
                 {
