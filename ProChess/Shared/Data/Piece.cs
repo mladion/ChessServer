@@ -7,11 +7,13 @@
         public int StartColumn { get; set; }
         public string Image { get; set; } = "";
 
+        private readonly int[] _edgeBoard = { 0, 7 };
+
         public abstract List<Cell> GetMovementPossibilities(List<Piece> whitePieces, List<Piece> blackPieces);
 
         public virtual Cell? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            if (row >= 0 && column >= 0 && row <= 7 && column <= 7)
+            if (row >= _edgeBoard[0] && column >= _edgeBoard[0] && row <= _edgeBoard[1] && column <= _edgeBoard[1])
             {
                 var whitePiece = whitePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
                 var blackPiece = blackPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
