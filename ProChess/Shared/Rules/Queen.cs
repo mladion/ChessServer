@@ -61,11 +61,11 @@ namespace Shared.Rules
             }
         }
 
-        private void CheckTheMovesOnTheRight(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private void CheckTheMovesOnTheLeft(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             Cell? cellPossible = null;
 
-            for (var column = this.StartColumn + _directionOffsets[0]; column <= _edgeBoard[1]; column++)
+            for (var column = this.StartColumn + _directionOffsets[1]; column >= _edgeBoard[0]; column--)
             {
                 cellPossible = EvaluateCellForMovement(this.StartRow, column, whitePieces, blackPieces);
                 if (cellPossible != null)
@@ -80,11 +80,11 @@ namespace Shared.Rules
             }
         }
 
-        private void CheckTheMovesOnTheLeft(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private void CheckTheMovesOnTheRight(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             Cell? cellPossible = null;
 
-            for (var column = this.StartColumn + _directionOffsets[1]; column >= _edgeBoard[0]; column--)
+            for (var column = this.StartColumn + _directionOffsets[0]; column <= _edgeBoard[1]; column++)
             {
                 cellPossible = EvaluateCellForMovement(this.StartRow, column, whitePieces, blackPieces);
                 if (cellPossible != null)
