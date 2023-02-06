@@ -21,9 +21,11 @@ namespace Shared.Rules
 
         private void CheckTheMovesAhead(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
+            Cell? cellPossible = null;
+
             for (var row = this.StartRow + _directionOffsets[0]; row <= _edgeBoard[1]; row++)
             {
-                var cellPossible = EvaluateCellForMovement(row, this.StartColumn, whitePieces, blackPieces);
+                cellPossible = EvaluateCellForMovement(row, this.StartColumn, whitePieces, blackPieces);
                 if (cellPossible != null)
                 {
                     cellsPossible.Add(cellPossible);
@@ -38,9 +40,11 @@ namespace Shared.Rules
 
         private void CheckBackMoves(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
+            Cell? cellPossible = null;
+
             for (var row = this.StartRow + _directionOffsets[1]; row >= _edgeBoard[0]; row--)
             {
-                var cellPossible = EvaluateCellForMovement(row, this.StartColumn, whitePieces, blackPieces);
+                cellPossible = EvaluateCellForMovement(row, this.StartColumn, whitePieces, blackPieces);
                 if (cellPossible != null)
                 {
                     cellsPossible.Add(cellPossible);
@@ -55,9 +59,11 @@ namespace Shared.Rules
         
         private void CheckTheMovesOnTheRight(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
+            Cell? cellPossible = null;
+
             for (var column = this.StartColumn + _directionOffsets[0]; column <= _edgeBoard[1]; column++)
             {
-                var cellPossible = EvaluateCellForMovement(this.StartRow, column, whitePieces, blackPieces);
+                cellPossible = EvaluateCellForMovement(this.StartRow, column, whitePieces, blackPieces);
                 if (cellPossible != null)
                 {
                     cellsPossible.Add(cellPossible);
@@ -72,9 +78,11 @@ namespace Shared.Rules
         
         private void CheckTheMovesOnTheLeft(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
+            Cell? cellPossible = null;
+
             for (var column = this.StartColumn + _directionOffsets[1]; column >= _edgeBoard[0]; column--)
             {
-                var cellPossible = EvaluateCellForMovement(this.StartRow, column, whitePieces, blackPieces);
+                cellPossible = EvaluateCellForMovement(this.StartRow, column, whitePieces, blackPieces);
                 if (cellPossible != null)
                 {
                     cellsPossible.Add(cellPossible);

@@ -117,7 +117,7 @@ namespace Shared.Test
 
             // assert
             result.Should().NotBeNullOrEmpty();
-            // to do En Passant Move -> change HaveCount(2)
+            // TODO En Passant Move -> change HaveCount(2)
             result.Should().HaveCount(1);
             result.Where(x => x.ContainsPiece == false).Should().HaveCount(1);
         }

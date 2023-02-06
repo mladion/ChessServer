@@ -1,27 +1,25 @@
-﻿using System.Data.Common;
-using Shared.Data;
-using Shared.Helpers.Extensions;
+﻿using Shared.Data;
 
 namespace Shared.Rules
 {
     public class Bishop : Piece
     {
         private readonly int[] _edgeBoard = { 0, 7 };
-        private readonly int[] _directionOffsets = { 1, -1};
+        private readonly int[] _directionOffsets = { 1, -1 };
 
         public override List<Cell> GetMovementPossibilities(List<Piece> whitePieces, List<Piece> blackPieces)
         {
             List<Cell> cellsPossible = new();
 
-            CheckOutTheMovesOnTheTopLeft(cellsPossible, whitePieces, blackPieces);
-            CheckOutTheMovesOnTheTopRight(cellsPossible, whitePieces, blackPieces);
-            CheckOutTheMovesOnTheBottomLeft(cellsPossible, whitePieces, blackPieces);
-            CheckOutTheMovesOnTheBottomRight(cellsPossible, whitePieces, blackPieces);
+            CheckTheMovesOnTheTopLeftDiagonal(cellsPossible, whitePieces, blackPieces);
+            CheckTheMovesOnTheTopRightDiagonal(cellsPossible, whitePieces, blackPieces);
+            CheckTheMovesOnTheBottomLeftDiagonal(cellsPossible, whitePieces, blackPieces);
+            CheckTheMovesOnTheBottomRightDiagonal(cellsPossible, whitePieces, blackPieces);
 
             return cellsPossible;
         }
 
-        private void CheckOutTheMovesOnTheTopLeft(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private void CheckTheMovesOnTheTopLeftDiagonal(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             var column = this.StartColumn;
             Cell? cellPossible = null;
@@ -44,7 +42,7 @@ namespace Shared.Rules
             }
         }
 
-        private void CheckOutTheMovesOnTheTopRight(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private void CheckTheMovesOnTheTopRightDiagonal(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             var column = this.StartColumn;
             Cell? cellPossible = null;
@@ -67,7 +65,7 @@ namespace Shared.Rules
             }
         }
 
-        private void CheckOutTheMovesOnTheBottomLeft(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private void CheckTheMovesOnTheBottomLeftDiagonal(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             var column = this.StartColumn;
             Cell? cellPossible = null;
@@ -90,7 +88,7 @@ namespace Shared.Rules
             }
         }
 
-        private void CheckOutTheMovesOnTheBottomRight(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private void CheckTheMovesOnTheBottomRightDiagonal(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             var column = this.StartColumn;
             Cell? cellPossible = null;
