@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{DCE5D25D-4ECF-4EE1-B9EC-4EB59E54FF1E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4EF66F86-5D55-4960-A7E3-768F750A871F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Test", "Tests\Shared.Test\Shared.Test.csproj", "{087A88AB-0A75-49D6-8CD5-2B68C300887C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +43,16 @@ Global
 		{DCE5D25D-4ECF-4EE1-B9EC-4EB59E54FF1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCE5D25D-4ECF-4EE1-B9EC-4EB59E54FF1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCE5D25D-4ECF-4EE1-B9EC-4EB59E54FF1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{087A88AB-0A75-49D6-8CD5-2B68C300887C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{087A88AB-0A75-49D6-8CD5-2B68C300887C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{087A88AB-0A75-49D6-8CD5-2B68C300887C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{087A88AB-0A75-49D6-8CD5-2B68C300887C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{087A88AB-0A75-49D6-8CD5-2B68C300887C} = {4EF66F86-5D55-4960-A7E3-768F750A871F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A3F2AAE1-BFAB-4B57-8884-821935744C27}

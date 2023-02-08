@@ -1,18 +1,18 @@
 ﻿@using global::Shared.Data;
 
-@for (var row = VerticalAxis.Length - 1; row >= 0; row--)
+@for (var row = _verticalAxis.Length - 1; row >= 0; row--)
 {
     int localRow = row;
 
     <div class="row flex-nowrap">
-        @for (var column = 0; column < HorizontalAxis.Length; column++)
+        @for (var column = 0; column < _horizontalAxis.Length; column++)
         {
             int localColumn = column;
 
-            var piece = BlackPieces.FirstOrDefault(x => x.StartColumn == column && x.StartRow == row);
+            var piece = _blackPieces.FirstOrDefault(x => x.StartColumn == column && x.StartRow == row);
             if (piece == null)
             {
-                piece = WhitePieces.FirstOrDefault(x => x.StartColumn == column && x.StartRow == row);
+                piece = _whitePieces.FirstOrDefault(x => x.StartColumn == column && x.StartRow == row);
             }
 
             Cell cell = new Cell(localRow, localColumn);

@@ -1,7 +1,4 @@
-﻿using Shared.Data;
-using Shared.Rules;
-
-namespace Shared.Data
+﻿namespace Shared.Data
 {
     public abstract class Piece
     {
@@ -10,25 +7,29 @@ namespace Shared.Data
         public int StartColumn { get; set; }
         public string Image { get; set; } = "";
 
-        public abstract List<Cell> EvaluateCells(List<Piece> whitePieces, List<Piece> blackPieces);
+        private readonly int[] _edgeBoard = { 0, 7 };
 
-        public Cell? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
+        public abstract List<Cell> GetMovementPossibilities(List<Piece> whitePieces, List<Piece> blackPieces);
+
+        public virtual Cell? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var whitePiece = whitePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+            if (row >= _edgeBoard[0] && column >= _edgeBoard[0] && row <= _edgeBoard[1] && column <= _edgeBoard[1])
+            {
+                var whitePiece = whitePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+                var blackPiece = blackPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
 
-            var blackPiece = blackPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
-
-            if (whitePiece == null && blackPiece == null)
-            {
-                return new Cell(row, column);
-            }
-            else if (this as Pawn == null && this.Color == PieceColor.White && blackPiece != null)
-            {
-                return new Cell(row, column, true);
-            }
-            else if (this as Pawn == null && this.Color == PieceColor.Black && whitePiece != null)
-            {
-                return new Cell(row, column, true);
+                if (whitePiece == null && blackPiece == null)
+                {
+                    return new Cell(row, column);
+                }
+                else if (this.Color == PieceColor.White && blackPiece != null)
+                {
+                    return new Cell(row, column, true);
+                }
+                else if (this.Color == PieceColor.Black && whitePiece != null)
+                {
+                    return new Cell(row, column, true);
+                }
             }
 
             return null;
