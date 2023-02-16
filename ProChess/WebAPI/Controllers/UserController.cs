@@ -24,7 +24,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{userId}")]
-        public IActionResult GetUserById([FromRoute] Guid userId)
+        public IActionResult GetUserById([FromRoute] string userId)
         {
             var view = _userService.GetUserById(userId);
 

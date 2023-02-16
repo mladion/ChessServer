@@ -1,6 +1,8 @@
 using Domain;
 using Domain.IRepository;
+using Domain.Models;
 using Domain.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Service.CustomServices;
 using Service.ICustomServices;
@@ -13,8 +15,10 @@ builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<ChessDbContext>(options =>
-       options.UseNpgsql(builder.Configuration.GetConnectionString("ChessDatabase")));
+builder.Services.AddDbContext<ChessDbContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("ChessDatabase")));
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ChessDbContext>();
 
 builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1",
     new Microsoft.OpenApi.Models.OpenApiInfo
@@ -24,7 +28,6 @@ builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1",
     }));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
@@ -50,6 +53,9 @@ app.UseSwagger();
 app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "ProChess"));
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();

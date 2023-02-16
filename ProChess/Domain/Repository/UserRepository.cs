@@ -13,28 +13,28 @@ namespace Domain.Repository
             _chessDbContext = chessDbContext;
         }
 
-        public List<User> GetAllUsers()
+        public List<ApplicationUser> GetAllUsers()
         {
-            return _chessDbContext.Users.ToList();
+            return _chessDbContext.ApplicationUsers.ToList();
         }
 
-        public User? GetUserById(Guid userId)
+        public ApplicationUser? GetUserById(string userId)
         {
-            return _chessDbContext.Users.Find(userId);
+            return _chessDbContext.ApplicationUsers.Find(userId);
         }
 
-        public void InsertUser(User user)
+        public void InsertUser(ApplicationUser user)
         {
             _chessDbContext.Users.Add(user);
         }
 
-        public void UpdateUser(User user)
+        public void UpdateUser(ApplicationUser user)
         {
-            _chessDbContext.Set<User>().Attach(user);
+            _chessDbContext.Set<ApplicationUser>().Attach(user);
             _chessDbContext.Entry(user).State = EntityState.Modified;
         }
 
-        public void DeleteUser(User user)
+        public void DeleteUser(ApplicationUser user)
         {
             _chessDbContext.Users.Remove(user);
         }

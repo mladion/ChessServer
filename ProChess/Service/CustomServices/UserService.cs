@@ -18,11 +18,10 @@ namespace Service.CustomServices
 
         public UserView CreateUser(UserRequest request)
         {
-            var user = new User
+            var user = new ApplicationUser
             {
                 UserName = request.UserName,
                 Email = request.Email,
-                Password = request.Password,
                 Country = request.Country,
                 Biography = request.Biography,
                 ELO = request.ELO
@@ -33,7 +32,6 @@ namespace Service.CustomServices
 
             return new UserView
             {
-                Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
                 Country = user.Country,
@@ -42,7 +40,7 @@ namespace Service.CustomServices
             };
         }
 
-        public UserView? GetUserById(Guid userId)
+        public UserView? GetUserById(string userId)
         {
             var user = _userRepository.GetUserById(userId);
 
@@ -51,9 +49,6 @@ namespace Service.CustomServices
 
             return new UserView
             {
-                Id = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
                 Country = user.Country,
                 Biography = user.Biography,
                 ELO = user.ELO,

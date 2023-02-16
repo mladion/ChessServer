@@ -5,6 +5,6 @@ namespace Service.ICustomServices
     public interface IUserService
     {
         public UserView CreateUser(UserRequest request);
-        public UserView? GetUserById(Guid userId);
+        public UserView? GetUserById(string userId);
     }
 }
