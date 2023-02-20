@@ -21,37 +21,37 @@ namespace Shared.Rules
         private void CheckTheMovesAhead(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[2], StartColumn + _directionOffsets[0], whitePieces, blackPieces);
-            cellsPossible.AddCell(cellPossible);
+            cellsPossible.AddNotNullableItem(cellPossible);
 
             cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[2], StartColumn + _directionOffsets[1], whitePieces, blackPieces);
-            cellsPossible.AddCell(cellPossible);
+            cellsPossible.AddNotNullableItem(cellPossible);
         }
 
         private void CheckBackMoves(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[3], StartColumn + _directionOffsets[0], whitePieces, blackPieces);
-            cellsPossible.AddCell(cellPossible);
+            cellsPossible.AddNotNullableItem(cellPossible);
 
             cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[3], StartColumn + _directionOffsets[1], whitePieces, blackPieces);
-            cellsPossible.AddCell(cellPossible);
+            cellsPossible.AddNotNullableItem(cellPossible);
         }
 
         private void CheckTheMovesOnTheRight(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[0], StartColumn + _directionOffsets[2], whitePieces, blackPieces);
-            cellsPossible.AddCell(cellPossible);
+            cellsPossible.AddNotNullableItem(cellPossible);
 
             cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], StartColumn + _directionOffsets[2], whitePieces, blackPieces);
-            cellsPossible.AddCell(cellPossible);
+            cellsPossible.AddNotNullableItem(cellPossible);
         }
 
         private void CheckTheMovesOnTheLeft(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[0], StartColumn + _directionOffsets[3], whitePieces, blackPieces);
-            cellsPossible.AddCell(cellPossible);
+            cellsPossible.AddNotNullableItem(cellPossible);
 
             cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], StartColumn + _directionOffsets[3], whitePieces, blackPieces);
-            cellsPossible.AddCell(cellPossible);
+            cellsPossible.AddNotNullableItem(cellPossible);
         }
     }
 }
