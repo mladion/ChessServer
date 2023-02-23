@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Repository.Dto
+namespace WebAPI.Dto
 {
     public class UserRequest
     {
         [Required]
+        [Display(Name = "User name")]
         public string UserName { get; set; } = "";
 
         [Required]
@@ -14,9 +15,14 @@ namespace Repository.Dto
 
         [Required]
         [DataType(DataType.Password)]
-        [StringLength(80, ErrorMessage = "Your password must be between {2} and {1} characters", MinimumLength = 6)]
+        [StringLength(80, ErrorMessage = "Your password must be between {2} and {1} characters.", MinimumLength = 6)]
         [Display(Name = "Password")]
         public string Password { get; set; } = "";
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; } = "";
 
         [Display(Name = "Country")]
         public string? Country { get; set; }

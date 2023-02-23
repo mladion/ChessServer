@@ -1,12 +1,13 @@
 ﻿using Domain.Models;
 
-namespace Repository.Dto
+namespace WebAPI.Dto
 {
     public class UserView
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string UserName { get; set; } = "";
         public string Email { get; set; } = "";
+        public string? Password { get; set; }
         public string? Country { get; set; }
         public string? Biography { get; set; }
         public int ELO { get; set; }

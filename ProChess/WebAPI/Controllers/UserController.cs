@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Repository.Dto;
-using Service.ICustomServices;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using WebAPI.Dto;
 
 namespace WebAPI.Controllers
 {
@@ -8,27 +9,45 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public UserController(IUserService userService)
+        public UserController(UserManager<IdentityUser> userManager)
         {
-            _userService = userService;
+            _userManager = userManager;
         }
 
         [HttpPost]
-        public IActionResult PostUser([FromBody] UserRequest request)
+        public async Task<IActionResult> RegisterUser([FromBody] UserRequest request)
         {
-            var result = _userService.CreateUser(request);
+            var newUser = new ApplicationUser
+            {
+                UserName = request.UserName,
+                Email = request.Email,
+                Country = request.Country,
+                Biography = request.Biography,
+                ELO = request.ELO
+            };
 
-            return Ok(result);
-        }
+            var result = await _userManager.CreateAsync(newUser, request.Password);
 
-        [HttpGet("{userId}")]
-        public IActionResult GetUserById([FromRoute] string userId)
-        {
-            var view = _userService.GetUserById(userId);
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description);
 
-            return view != null ? Ok(view) : NotFound();
+                return Conflict(errors);
+            }
+
+            var user = new UserView
+            {
+                UserName = newUser.UserName,
+                Email = newUser.Email,
+                Password = newUser.PasswordHash,
+                Country = newUser.Country,
+                Biography = newUser.Biography,
+                ELO = newUser.ELO
+            };
+
+            return Ok(user);
         }
     }
 }

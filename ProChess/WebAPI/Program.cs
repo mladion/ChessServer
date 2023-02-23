@@ -1,11 +1,11 @@
 using Domain;
 using Domain.IRepository;
-using Domain.Models;
 using Domain.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Service.CustomServices;
-using Service.ICustomServices;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,20 +15,34 @@ builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<ChessDbContext>(options => 
+builder.Services.AddDbContext<ChessDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ChessDatabase")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ChessDbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ChessDbContext>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JwtIssuer"],
+            ValidAudience = builder.Configuration["JwtAudience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSecurityKey"]!))
+        };
+    });
 
 builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1",
     new Microsoft.OpenApi.Models.OpenApiInfo
-    { 
+    {
         Title = "ProChess",
-        Version= "v1",
+        Version = "v1",
     }));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
