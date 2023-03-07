@@ -35,12 +35,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1",
-    new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Title = "ProChess",
-        Version = "v1",
-    }));
+//builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1",
+//    new Microsoft.OpenApi.Models.OpenApiInfo
+//    {
+//        Title = "ProChess",
+//        Version = "v1",
+//    }));
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -64,7 +65,8 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseSwagger();
-app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "ProChess"));
+//app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "ProChess"));
+app.UseSwaggerUI();
 
 app.UseRouting();
 

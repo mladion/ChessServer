@@ -1,13 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebAPI.Dto
+namespace Shared.AuthModel
 {
-    public class UserRequest
+    public class RegisterModel
     {
-        [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; } = "";
-
         [Required]
         [EmailAddress]
         [Display(Name = "Email address")]
