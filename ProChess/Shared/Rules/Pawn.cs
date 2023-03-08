@@ -45,7 +45,7 @@ namespace Shared.Rules
                 cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], this.StartColumn, whitePieces, blackPieces);
             }
 
-            cellsPossible.AddCell(cellPossible);
+            cellsPossible.AddNotNullableItem(cellPossible);
         }
 
         private void CheckTheSpecialFrontMove(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
@@ -63,7 +63,7 @@ namespace Shared.Rules
                     cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[3], this.StartColumn, whitePieces, blackPieces);
                 }
 
-                cellsPossible.AddCell(cellPossible);
+                cellsPossible.AddNotNullableItem(cellPossible);
             }
         }
 
@@ -74,18 +74,18 @@ namespace Shared.Rules
             if (this.Color == PieceColor.White)
             {
                 cellPossible = EvaluateCellForAttack(this.StartRow + _directionOffsets[0], this.StartColumn + _directionOffsets[0], blackPieces);
-                cellsPossible.AddCell(cellPossible);
+                cellsPossible.AddNotNullableItem(cellPossible);
 
                 cellPossible = EvaluateCellForAttack(this.StartRow + _directionOffsets[0], this.StartColumn + _directionOffsets[1], blackPieces);
-                cellsPossible.AddCell(cellPossible);
+                cellsPossible.AddNotNullableItem(cellPossible);
             }
             else
             {
                 cellPossible = EvaluateCellForAttack(this.StartRow + _directionOffsets[1], this.StartColumn + _directionOffsets[0], whitePieces);
-                cellsPossible.AddCell(cellPossible);
+                cellsPossible.AddNotNullableItem(cellPossible);
 
                 cellPossible = EvaluateCellForAttack(this.StartRow + _directionOffsets[1], this.StartColumn + _directionOffsets[1], whitePieces);
-                cellsPossible.AddCell(cellPossible);
+                cellsPossible.AddNotNullableItem(cellPossible);
             }
         }
 
