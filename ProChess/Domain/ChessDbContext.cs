@@ -1,18 +1,20 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain
 {
-    public class ChessDbContext : DbContext
+    public class ChessDbContext : IdentityDbContext
     {
-        public ChessDbContext(DbContextOptions<ChessDbContext> options) :
-            base(options)
+        public ChessDbContext(DbContextOptions options) : base(options)
         {
 
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Game>()
                 .HasOne(x => x.WhiteUser)
                 .WithMany(x => x.WhiteGames)
@@ -26,7 +28,7 @@ namespace Domain
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Game> Games { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models
 {
@@ -7,8 +6,13 @@ namespace Domain.Models
 	{
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-		public Guid? WhiteUserId { get; set; }
-		public Guid? BlackUserId { get; set; }
+
+		[ForeignKey(nameof(WhiteUser))]
+		public string? WhiteUserId { get; set; }
+
+        [ForeignKey(nameof(BlackUser))]
+        public string? BlackUserId { get; set; }
+
 		public int WhiteELO { get; set; }
 		public int BlackELO { get; set; }
 		public int WhiteRatingDiff { get; set; }
@@ -18,7 +22,7 @@ namespace Domain.Models
 		public TimeOnly TimeControl { get; set; }
 		public DateTime StartGameTime { get; set; } = DateTime.Now;
 		public DateTime EndGameTime { get; set; }
-        public User WhiteUser { get; set; } = new User();
-        public User BlackUser { get; set; } = new User();
+        public virtual ApplicationUser WhiteUser { get; set; } = new ApplicationUser();
+        public virtual ApplicationUser BlackUser { get; set; } = new ApplicationUser();
     }
 }
