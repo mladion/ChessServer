@@ -22,11 +22,8 @@
                 {
                     return new Cell(row, column);
                 }
-                else if (this.Color == PieceColor.White && blackPiece != null)
-                {
-                    return new Cell(row, column, true);
-                }
-                else if (this.Color == PieceColor.Black && whitePiece != null)
+                else if ((this.Color == PieceColor.Black && whitePiece != null) ||
+                    (this.Color == PieceColor.White && blackPiece != null))
                 {
                     return new Cell(row, column, true);
                 }
@@ -35,8 +32,15 @@
             return null;
         }
 
-        public void MoveOrAttack(Cell cell, List<Piece> pieces)
+        public virtual void MoveOrAttack(Cell cell, List<Piece> whitePieces, List<Piece> blackPieces)
         {
+            var pieces = new List<Piece>();
+
+            if (this.Color == PieceColor.White)
+                pieces = blackPieces;
+            else
+                pieces = whitePieces;
+
             var hasPiece = pieces.FirstOrDefault(x => x.StartRow == cell.Row && x.StartColumn == cell.Column);
 
             if (hasPiece != null)

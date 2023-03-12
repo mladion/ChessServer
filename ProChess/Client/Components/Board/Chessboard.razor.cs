@@ -67,7 +67,7 @@ namespace Client.Components.Board
 
             if (activePiece != null)
             {
-                activePiece.MoveOrAttack(cell, activePiece.Color == PieceColor.White ? _blackPieces : _whitePieces);
+                activePiece.MoveOrAttack(cell, _whitePieces, _blackPieces);
 
                 if (activePiece as Pawn != null && (activePiece.StartRow == _positionsTransformation[0] ||
                     activePiece.StartRow == _positionsTransformation[1]))

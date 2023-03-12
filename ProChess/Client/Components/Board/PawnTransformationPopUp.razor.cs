@@ -33,7 +33,8 @@ namespace Client.Components.Board
                         Color = Piece.Color,
                         Image = $"/images/{color}R.svg",
                         StartColumn = Piece.StartColumn,
-                        StartRow = Piece.StartRow
+                        StartRow = Piece.StartRow,
+                        IsMoved = true
                     },
                     new Bishop
                     {

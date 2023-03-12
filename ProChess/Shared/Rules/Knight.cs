@@ -6,6 +6,7 @@ namespace Shared.Rules
     public class Knight : Piece
     {
         private readonly int[] _directionOffsets = { 1, -1, 2, -2 };
+
         public override List<Cell> GetMovementPossibilities(List<Piece> whitePieces, List<Piece> blackPieces)
         {
             List<Cell> cellsPossible = new();
