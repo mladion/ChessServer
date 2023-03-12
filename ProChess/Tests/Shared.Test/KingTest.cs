@@ -28,9 +28,8 @@ namespace Shared.Test
 
             // assert
             result.Should().NotBeNullOrEmpty();
-            // TODO castle -> change HaveCount(5)
-            result.Should().HaveCount(3);
-            result.Where(x => x.ContainsPiece == false).Should().HaveCount(3);
+            result.Should().HaveCount(5);
+            result.Where(x => x.ContainsPiece == false).Should().HaveCount(5);
         }
 
         [Test]

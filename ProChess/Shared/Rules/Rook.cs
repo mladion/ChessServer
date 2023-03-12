@@ -4,6 +4,8 @@ namespace Shared.Rules
 {
     public class Rook : Piece
     {
+        public bool IsMoved { get; set; }
+
         private readonly int[] _edgeBoard = { 0, 7 };
         private readonly int[] _directionOffsets = { 1, -1};
 
@@ -17,6 +19,12 @@ namespace Shared.Rules
             CheckTheMovesOnTheLeft(cellsPossible, whitePieces, blackPieces);
 
             return cellsPossible;
+        }
+
+        public override void MoveOrAttack(Cell cell, List<Piece> whitePieces, List<Piece> blackPieces)
+        {
+            this.IsMoved = true;
+            base.MoveOrAttack(cell, whitePieces, blackPieces);
         }
 
         private void CheckTheMovesAhead(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
