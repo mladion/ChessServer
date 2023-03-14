@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Models
+namespace Shared.Models
 {
 	public class Game
 	{
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
 		[ForeignKey(nameof(WhiteUser))]
