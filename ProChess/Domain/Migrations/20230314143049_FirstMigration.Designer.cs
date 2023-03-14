@@ -12,70 +12,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(ChessDbContext))]
-    [Migration("20230216114936_addTheApplicationTables")]
-    partial class addTheApplicationTables
+    [Migration("20230314143049_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Domain.Models.Game", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("BlackELO")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BlackRatingDiff")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("BlackUserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("EndGameTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("GameMoves")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Result")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("StartGameTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<TimeOnly>("TimeControl")
-                        .HasColumnType("time without time zone");
-
-                    b.Property<int>("WhiteELO")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("WhiteRatingDiff")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("WhiteUserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BlackUserId");
-
-                    b.HasIndex("WhiteUserId");
-
-                    b.ToTable("Games");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -228,10 +176,12 @@ namespace Domain.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
@@ -268,10 +218,12 @@ namespace Domain.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -281,7 +233,59 @@ namespace Domain.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Shared.Models.Game", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("BlackELO")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BlackRatingDiff")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("BlackUserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EndGameTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("GameMoves")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Result")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StartGameTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<TimeOnly>("TimeControl")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<int>("WhiteELO")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WhiteRatingDiff")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("WhiteUserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlackUserId");
+
+                    b.HasIndex("WhiteUserId");
+
+                    b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("Shared.Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -295,23 +299,6 @@ namespace Domain.Migrations
                         .HasColumnType("integer");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
-                });
-
-            modelBuilder.Entity("Domain.Models.Game", b =>
-                {
-                    b.HasOne("Domain.Models.ApplicationUser", "BlackUser")
-                        .WithMany("BlackGames")
-                        .HasForeignKey("BlackUserId")
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.ApplicationUser", "WhiteUser")
-                        .WithMany("WhiteGames")
-                        .HasForeignKey("WhiteUserId")
-                        .IsRequired();
-
-                    b.Navigation("BlackUser");
-
-                    b.Navigation("WhiteUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -365,7 +352,24 @@ namespace Domain.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Shared.Models.Game", b =>
+                {
+                    b.HasOne("Shared.Models.ApplicationUser", "BlackUser")
+                        .WithMany("BlackGames")
+                        .HasForeignKey("BlackUserId")
+                        .IsRequired();
+
+                    b.HasOne("Shared.Models.ApplicationUser", "WhiteUser")
+                        .WithMany("WhiteGames")
+                        .HasForeignKey("WhiteUserId")
+                        .IsRequired();
+
+                    b.Navigation("BlackUser");
+
+                    b.Navigation("WhiteUser");
+                });
+
+            modelBuilder.Entity("Shared.Models.ApplicationUser", b =>
                 {
                     b.Navigation("BlackGames");
 
