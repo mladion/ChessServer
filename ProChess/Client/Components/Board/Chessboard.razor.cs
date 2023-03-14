@@ -11,7 +11,7 @@ namespace Client.Components.Board
     {
         [CascadingParameter]
         IModalService Modal { get; set; } = default!;
-
+        private bool _whiteTurn { get; set; } = true;
         Piece? activePiece = null;
         List<Cell> cellsPossible = new();
 
@@ -43,6 +43,13 @@ namespace Client.Components.Board
             if (activePiece == null)
             {
                 activePiece = piece;
+
+                if ((activePiece.Color == PieceColor.Black && _whiteTurn) || (activePiece.Color == PieceColor.White && !_whiteTurn))
+                {
+                    activePiece = null;
+                    return;
+                }
+
                 EvaluatePieceSpots();
             }
         }
@@ -91,6 +98,7 @@ namespace Client.Components.Board
                 }
 
                 activePiece = null;
+                _whiteTurn = !_whiteTurn;
                 EvaluatePieceSpots();
             }
         }
