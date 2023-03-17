@@ -9,18 +9,34 @@ namespace Client.Components.Board
 {
     public partial class Chessboard
     {
-        [CascadingParameter]
-        IModalService Modal { get; set; } = default!;
-        private bool _whiteTurn { get; set; } = true;
-        Piece? activePiece = null;
-        List<Cell> cellsPossible = new();
+        #region Parameters
 
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
+
+        #endregion
+
+        #region Private filds and properties
+
+        #region Fields
+
+        private readonly int[] _positionsTransformation = { 0, 7 };
         private readonly string[] _horizontalAxis = { "a", "b", "c", "d", "e", "f", "g", "h" };
         private readonly string[] _verticalAxis = { "1", "2", "3", "4", "5", "6", "7", "8" };
-        private readonly int[] _positionsTransformation = { 0, 7 };
 
+        #endregion
+
+        #region Property
+
+        private bool _whiteTurn { get; set; } = true;
         private List<Piece> _whitePieces { get; set; } = new List<Piece>();
         private List<Piece> _blackPieces { get; set; } = new List<Piece>();
+
+        #endregion
+
+        #endregion
+
+        Piece? activePiece = null;
+        List<Cell> cellsPossible = new();
 
         protected override void OnInitialized()
         {
@@ -85,7 +101,7 @@ namespace Client.Components.Board
                     var infoPiece = await modal.Result;
                     var newPiece = (infoPiece.Data as Piece) ?? throw new InvalidOperationException("Bad");
 
-                    if (activePiece.Color == PieceColor.White) 
+                    if (activePiece.Color == PieceColor.White)
                     {
                         _whitePieces.Remove(activePiece);
                         _whitePieces.Add(newPiece);
