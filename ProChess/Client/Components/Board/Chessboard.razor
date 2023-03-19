@@ -19,11 +19,15 @@
 
             <div @onclick="() => MoveOrAttackPiece(cell)" class="cell">
                 <div class="@(canMoveHere ? "active-cell" : "")">
+
+                    <div class="@(((localRow == blackKingRow && localColumn == blackKingColumn && itIsCheckforBlack == true)||
+                    (localRow == whiteKingRow && localColumn == whiteKingColumn && itIsCheckforWhite == true)) ? "piece check" : "")">
                     @if (piece != null)
                     {
-                        <img @onclick="@(e => ClickOnPiece(e, piece))" src="@piece.Image" 
-                            class="piece @(piece == activePiece && piece != null ? "active" : "")" />
+                        <img @onclick="@(e => ClickOnPiece(e, piece))" src="@piece.Image"
+                        class="piece @(piece == activePiece && piece != null ? "active" : "")" />
                     }
+                    </div>
                 </div>
             </div>
         }
