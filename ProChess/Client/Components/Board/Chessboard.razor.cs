@@ -13,13 +13,8 @@ namespace Client.Components.Board
         IModalService Modal { get; set; } = default!;
 
         //Some new variables for detection of check 
-        bool itIsCheckforWhite = false;
-        bool itIsCheckforBlack = false;
-        //current position of Kings in game, need only for red backlight :)))
-        int whiteKingRow = 0;
-        int whiteKingColumn = 0;
-        int blackKingRow = 0;
-        int blackKingColumn = 0;
+        Piece? KingUnderCheck = null;
+        List <Cell>? KingsCheckFromPieces = null;
 
         InCheckPossibility IsCheckPossible = new InCheckPossibility();
         //Changes in main code to be discussed 
@@ -48,7 +43,10 @@ namespace Client.Components.Board
         {
             if (activePiece == piece)
             {
-
+                // ----------------------------------New Function Call--------------------------------------
+                // Do a verification of King's position and if there are detected a check, do it red
+                KingPossitionEvaluate();
+                // ----------------------------------Position in code---------------------------------------
                 activePiece = null;
                 EvaluatePieceSpots();
 
@@ -69,45 +67,21 @@ namespace Client.Components.Board
             if (activePiece != null)
             {
                 cellsPossible = activePiece.GetMovementPossibilities(_whitePieces, _blackPieces);
-
-
                 // ---------------------------------------New Function Call-------------------------------------------
                 // Do a verification of elements and delete from cellPossible moves which can do an instant Check&Mate
-                // cellsPossible = IsCheckPossible.EvaluateListOfCellsPossibleForCheck(cellsPossible, _whitePieces, _blackPieces);
+                cellsPossible = IsCheckPossible.CouldPossibleCellsCreateCheck(activePiece, cellsPossible, _whitePieces, _blackPieces);
                 // ---------------------------------------Position in code--------------------------------------------
             }
-
-            // ----------------------------------New Function Call--------------------------------------
-            // Do a verification of King's position and if there are detected a check, do it red
-            KingPossitionEvaluate();
-            // ----------------------------------Position in code---------------------------------------
         }
 
-        private void KingPossitionEvaluate()
+        private void KingPossitionEvaluate() //List<Cell>
         {
-            var BKingHere = _blackPieces.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
-            var kingBlack = new King();
-
-            if (BKingHere != null)
-                kingBlack = (King)BKingHere;
-
-            var WKingHere = _whitePieces.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
-            var kingWhite = new King();
-
-            if (WKingHere != null)
-                kingWhite = (King)WKingHere;
-            // save current position of king, because of problems with frontend part 
-            whiteKingRow = kingWhite.StartRow;
-            whiteKingColumn = kingWhite.StartColumn;
-            blackKingRow = kingBlack.StartRow;
-            blackKingColumn = kingBlack.StartColumn;
-            
             // save in this flag if there are check
-            itIsCheckforWhite = IsCheckPossible.EvaluateCellsForPossibleCheck(kingWhite, _whitePieces, _blackPieces);
-            itIsCheckforBlack = IsCheckPossible.EvaluateCellsForPossibleCheck(kingBlack, _whitePieces, _blackPieces);
+            KingUnderCheck = IsCheckPossible.EvaluateCellsForPossibleCheck(activePiece, _whitePieces, _blackPieces);
+            //Check if current possible positions of activePiece, could create a check for one of kings
+            //return IsCheckPossible.CouldPossibleCellsCreateCheck(activePiece, cellsPossible, _whitePieces, _blackPieces);
         }
-
-            private async Task MoveOrAttackPiece(Cell cell)
+        private async Task MoveOrAttackPiece(Cell cell)
         {
             bool canMoveHere = cellsPossible.Where(x => x.Row == cell.Row && x.Column == cell.Column).Any();
             if (!canMoveHere)
@@ -139,7 +113,10 @@ namespace Client.Components.Board
                         _blackPieces.Add(newPiece);
                     }
                 }
-
+                // ----------------------------------New Function Call--------------------------------------
+                // Do a verification of King's position and if there are detected a check, do it red
+                KingPossitionEvaluate();
+                // ----------------------------------Position in code---------------------------------------
                 activePiece = null;
                 EvaluatePieceSpots();
             }
