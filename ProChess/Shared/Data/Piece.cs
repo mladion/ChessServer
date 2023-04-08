@@ -1,4 +1,6 @@
-﻿namespace Shared.Data
+﻿using Shared.Rules; //Ask about this adding from Visual Studio???
+
+namespace Shared.Data
 {
     public abstract class Piece
     {
@@ -51,5 +53,6 @@
             this.StartRow = cell.Row;
             this.StartColumn = cell.Column;
         }
+        public abstract Piece Clone();
     }
 }

@@ -102,5 +102,15 @@ namespace Shared.Rules
                     break;
             }
         }
+        public override Piece Clone()
+        {
+            return new Rook
+            {
+                Color = Color,
+                Image = Image,
+                StartColumn = StartColumn,
+                StartRow = StartRow
+            };
+        }
     }
 }

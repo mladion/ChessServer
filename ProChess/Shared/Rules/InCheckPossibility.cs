@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using Shared.Data;
 using Shared.Helpers.Extensions;
+using System.Collections.Generic;
 using System.Data.Common;
 
 namespace Shared.Rules
@@ -12,25 +13,38 @@ namespace Shared.Rules
 
         public List<Cell> CouldPossibleCellsCreateCheck(Piece? activePiece, List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            List<Cell> cellsPossible_modificated = new();
 
-            return cellsPossible;
-        }
-        
-        public Piece? EvaluateCellsForPossibleCheck(Piece? activePiece, List<Piece> whitePieces, List<Piece> blackPieces)
-        {
-            bool itIsCheck;
-            List<Piece> currentPieces = new List<Piece>();
-            List<Piece> opponentPieces = new List<Piece>();
-            Piece? opponentKing = null;
+            List<Piece> whitePiecesCopy = new List<Piece>();
+            foreach (var piece in whitePieces)
+            {
+                whitePiecesCopy.Add(piece.Clone());
+            }
 
-            var BKingHere = blackPieces.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
+            List<Piece> blackPiecesCopy = new List<Piece>();
+            foreach (var piece in blackPieces)
+            {
+                blackPiecesCopy.Add(piece.Clone());
+            }
+
+            var activePieceCopy = whitePiecesCopy.FirstOrDefault(x => x.StartColumn == activePiece.StartColumn && x.StartRow == activePiece.StartRow);
+            if (activePieceCopy == null)
+            {
+                activePieceCopy = blackPiecesCopy.FirstOrDefault(x => x.StartColumn == activePiece.StartColumn && x.StartRow == activePiece.StartRow);
+            }
+
+            //---------------------------------------------------------------------
+            Piece? KingUnderAtack = null;
+            List<Piece> kingSidePieces = new List<Piece>();
+            List<Piece> opponentSidePieces = new List<Piece>();
+            Piece? theKingPiece = null;
+
+            var BKingHere = blackPiecesCopy.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
             var kingBlack = new King();
 
             if (BKingHere != null)
                 kingBlack = (King)BKingHere;
 
-            var WKingHere = whitePieces.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
+            var WKingHere = whitePiecesCopy.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
             var kingWhite = new King();
 
             if (WKingHere != null)
@@ -39,49 +53,104 @@ namespace Shared.Rules
             // find out what color of figures are played by current player 
             if (activePiece.Color == PieceColor.White)
             {
-                currentPieces = whitePieces;
-                opponentPieces = blackPieces;
-                opponentKing = kingBlack;
+                theKingPiece = kingWhite;
+                kingSidePieces = whitePiecesCopy;
+                opponentSidePieces = blackPiecesCopy;
             }
             else
             {
-                currentPieces = blackPieces;
-                opponentPieces = whitePieces;
-                opponentKing = kingWhite;
+                theKingPiece = kingBlack;
+                kingSidePieces = blackPiecesCopy;
+                opponentSidePieces = whitePiecesCopy;
             }
+            //---------------------------------------------------------------------
 
-            // detect possible check 
-            itIsCheck = CheckTheMovesOfPawn(opponentKing, whitePieces, blackPieces);
-            if (itIsCheck == true) return opponentKing;
-            itIsCheck = CheckTheMovesOfKnight(opponentKing, currentPieces);
-            if (itIsCheck == true) return opponentKing;
-            itIsCheck = CheckTheMovesOfQueenAndRooK(opponentKing, currentPieces, opponentPieces);
-            if (itIsCheck == true) return opponentKing;
-            itIsCheck = CheckTheMovesOfQueenAndBishop(opponentKing, currentPieces, opponentPieces);
-            if (itIsCheck == true) return opponentKing;
+            List<Cell> cellsPossible_modificated = new();
 
-            return null;
+            for (int i = 0; i < cellsPossible.Count; i++)
+            {
+                var cell = cellsPossible[i];
+                activePieceCopy.MoveOrAttack(cell, whitePiecesCopy, blackPiecesCopy);
+
+                KingUnderAtack = DetectPossibleCheck(theKingPiece, kingSidePieces, opponentSidePieces);
+
+                if (KingUnderAtack == null)
+                {
+                     cellsPossible_modificated.Add(cell);
+                }
+            }
+            return cellsPossible_modificated;
         }
-        private bool CheckTheMovesOfPawn(Piece opponentKing, List<Piece> whitePieces, List<Piece> blackPieces)
+        
+        public Piece? EvaluateCellsForPossibleCheck(Piece? kingPiece, List<Piece> whitePieces, List<Piece> blackPieces)
+        {
+            List<Piece> kingSidePieces = new List<Piece>();
+            List<Piece> opponentSidePieces = new List<Piece>();
+            Piece? theKingPiece = null;
+            /*
+            var BKingHere = _blackPieces.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
+            var kingBlack = new King();
+
+            if (BKingHere != null)
+                kingBlack = (King)BKingHere;
+
+            var WKingHere = _whitePieces.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
+            var kingWhite = new King();
+
+            if (WKingHere != null)
+                kingWhite = (King)WKingHere;
+            */
+            // find out what color of figures are played by current player and what king need to be verified
+            if (kingPiece.Color == PieceColor.White)
+            {
+                theKingPiece = kingPiece; //kingWhite
+                kingSidePieces = whitePieces;
+                opponentSidePieces = blackPieces;
+            }
+            else
+            {
+                theKingPiece = kingPiece; //kingBlack
+                kingSidePieces = blackPieces;
+                opponentSidePieces = whitePieces;
+            }
+            return DetectPossibleCheck(theKingPiece, kingSidePieces, opponentSidePieces);
+        }
+
+        private Piece? DetectPossibleCheck(Piece theKingPiece, List<Piece> kingSidePieces, List<Piece> opponentSidePieces)
         {
             bool itIsCheck;
 
-            if (opponentKing.Color == PieceColor.White)
+            itIsCheck = CheckTheMovesOfPawn(theKingPiece, opponentSidePieces);
+            if (itIsCheck == true) return theKingPiece;
+            itIsCheck = CheckTheMovesOfKnight(theKingPiece, opponentSidePieces);
+            if (itIsCheck == true) return theKingPiece;
+            itIsCheck = CheckTheMovesOfQueenAndRooK(theKingPiece, kingSidePieces, opponentSidePieces);
+            if (itIsCheck == true) return theKingPiece;
+            itIsCheck = CheckTheMovesOfQueenAndBishop(theKingPiece, kingSidePieces, opponentSidePieces);
+            if (itIsCheck == true) return theKingPiece;
+
+            return null;
+        }
+
+        private bool CheckTheMovesOfPawn(Piece theKingPiece, List<Piece> opponentSidePieces)
+        {
+            bool itIsCheck;
+
+            if (theKingPiece.Color == PieceColor.White)
             {
-                itIsCheck = PawnAttack(opponentKing.StartRow + _directionOffsets[0], opponentKing.StartColumn + _directionOffsets[0], blackPieces);
+                itIsCheck = PawnAttack(theKingPiece.StartRow + _directionOffsets[0], theKingPiece.StartColumn + _directionOffsets[0], opponentSidePieces);
                 if (itIsCheck == true) return true;
-                itIsCheck = PawnAttack(opponentKing.StartRow + _directionOffsets[0], opponentKing.StartColumn + _directionOffsets[1], blackPieces);
+                itIsCheck = PawnAttack(theKingPiece.StartRow + _directionOffsets[0], theKingPiece.StartColumn + _directionOffsets[1], opponentSidePieces);
                 return itIsCheck;
             }
             else
             {
-                itIsCheck = PawnAttack(opponentKing.StartRow + _directionOffsets[1], opponentKing.StartColumn + _directionOffsets[0], whitePieces);
+                itIsCheck = PawnAttack(theKingPiece.StartRow + _directionOffsets[1], theKingPiece.StartColumn + _directionOffsets[0], opponentSidePieces);
                 if (itIsCheck == true) return true;
-                itIsCheck = PawnAttack(opponentKing.StartRow + _directionOffsets[1], opponentKing.StartColumn + _directionOffsets[1], whitePieces);
+                itIsCheck = PawnAttack(theKingPiece.StartRow + _directionOffsets[1], theKingPiece.StartColumn + _directionOffsets[1], opponentSidePieces);
                 return itIsCheck;
             }
         }
-
         private bool PawnAttack(int row, int column, List<Piece> pieces)
         {
             Piece? piece = pieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
@@ -93,26 +162,26 @@ namespace Shared.Rules
             return false;
         }
 
-        private bool CheckTheMovesOfKnight(Piece opponentKing, List<Piece> currentPieces)
+        private bool CheckTheMovesOfKnight(Piece theKingPiece, List<Piece> opponentSidePieces)
         {
             bool itIsCheck;
 
-            itIsCheck = KnightAttack(opponentKing.StartRow + _directionOffsets[2], opponentKing.StartColumn + _directionOffsets[0], currentPieces);
+            itIsCheck = KnightAttack(theKingPiece.StartRow + _directionOffsets[2], theKingPiece.StartColumn + _directionOffsets[0], opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = KnightAttack(opponentKing.StartRow + _directionOffsets[2], opponentKing.StartColumn + _directionOffsets[1], currentPieces);
+            itIsCheck = KnightAttack(theKingPiece.StartRow + _directionOffsets[2], theKingPiece.StartColumn + _directionOffsets[1], opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = KnightAttack(opponentKing.StartRow + _directionOffsets[3], opponentKing.StartColumn + _directionOffsets[0], currentPieces);
+            itIsCheck = KnightAttack(theKingPiece.StartRow + _directionOffsets[3], theKingPiece.StartColumn + _directionOffsets[0], opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = KnightAttack(opponentKing.StartRow + _directionOffsets[3], opponentKing.StartColumn + _directionOffsets[1], currentPieces);
+            itIsCheck = KnightAttack(theKingPiece.StartRow + _directionOffsets[3], theKingPiece.StartColumn + _directionOffsets[1], opponentSidePieces);
             if (itIsCheck == true) return true;
 
-            itIsCheck = KnightAttack(opponentKing.StartRow + _directionOffsets[0], opponentKing.StartColumn + _directionOffsets[2], currentPieces);
+            itIsCheck = KnightAttack(theKingPiece.StartRow + _directionOffsets[0], theKingPiece.StartColumn + _directionOffsets[2], opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = KnightAttack(opponentKing.StartRow + _directionOffsets[1], opponentKing.StartColumn + _directionOffsets[2], currentPieces);
+            itIsCheck = KnightAttack(theKingPiece.StartRow + _directionOffsets[1], theKingPiece.StartColumn + _directionOffsets[2], opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = KnightAttack(opponentKing.StartRow + _directionOffsets[0], opponentKing.StartColumn + _directionOffsets[3], currentPieces);
+            itIsCheck = KnightAttack(theKingPiece.StartRow + _directionOffsets[0], theKingPiece.StartColumn + _directionOffsets[3], opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = KnightAttack(opponentKing.StartRow + _directionOffsets[1], opponentKing.StartColumn + _directionOffsets[3], currentPieces);
+            itIsCheck = KnightAttack(theKingPiece.StartRow + _directionOffsets[1], theKingPiece.StartColumn + _directionOffsets[3], opponentSidePieces);
             if (itIsCheck == true) return true;
 
             return itIsCheck;
@@ -127,170 +196,170 @@ namespace Shared.Rules
             }
             return false;
         }
-        private bool CheckTheMovesOfQueenAndRooK(Piece opponentKing, List<Piece> currentPieces, List<Piece> opponentPieces)
+
+        private bool CheckTheMovesOfQueenAndRooK(Piece theKingPiece, List<Piece> kingSidePieces, List<Piece> opponentSidePieces)
         {
             bool itIsCheck;
 
-            itIsCheck = RookAndQueenAttackTop(opponentKing, currentPieces, opponentPieces);
+            itIsCheck = RookAndQueenAttackTop(theKingPiece, kingSidePieces, opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = RookAndQueenAttackBottom(opponentKing, currentPieces, opponentPieces);
+            itIsCheck = RookAndQueenAttackBottom(theKingPiece, kingSidePieces, opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = RookAndQueenAttackRight(opponentKing, currentPieces, opponentPieces);
+            itIsCheck = RookAndQueenAttackRight(theKingPiece, kingSidePieces, opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = RookAndQueenAttackLeft(opponentKing, currentPieces, opponentPieces);
+            itIsCheck = RookAndQueenAttackLeft(theKingPiece, kingSidePieces, opponentSidePieces);
             if (itIsCheck == true) return true;
 
             return itIsCheck;
         }
-        private bool RookAndQueenAttackTop(Piece opponentKing, List<Piece> currentPieces, List<Piece> opponentPieces)
+        private bool RookAndQueenAttackTop(Piece theKingPiece, List<Piece> kingSidePieces, List<Piece> opponentSidePieces)
         {
-            for (var row = opponentKing.StartRow + _directionOffsets[0]; row <= _edgeBoard[1]; row++)
+            for (var row = theKingPiece.StartRow + _directionOffsets[0]; row <= _edgeBoard[1]; row++)
             {
-                Piece? currentPiece = currentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == opponentKing.StartColumn);
-                Piece? opponentPiece = opponentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == opponentKing.StartColumn);
+                Piece? opponentSide = opponentSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == theKingPiece.StartColumn);
+                Piece? kingSide = kingSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == theKingPiece.StartColumn);
 
-                if ((currentPiece as Rook != null) || (currentPiece as Queen != null))
+                if ((opponentSide as Rook != null) || (opponentSide as Queen != null))
                     return true;
-                if ((currentPiece != null) || (opponentPiece != null))
+                if ((opponentSide != null) || (kingSide != null))
                     return false;
             }
             return false;
         }
-        private bool RookAndQueenAttackBottom(Piece opponentKing, List<Piece> currentPieces, List<Piece> opponentPieces)
+        private bool RookAndQueenAttackBottom(Piece theKingPiece, List<Piece> kingSidePieces, List<Piece> opponentSidePieces)
         {
-            for (var row = opponentKing.StartRow + _directionOffsets[1]; row >= _edgeBoard[0]; row--)
+            for (var row = theKingPiece.StartRow + _directionOffsets[1]; row >= _edgeBoard[0]; row--)
             {
-                Piece? currentPiece = currentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == opponentKing.StartColumn);
-                Piece? opponentPiece = opponentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == opponentKing.StartColumn);
+                Piece? opponentSide = opponentSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == theKingPiece.StartColumn);
+                Piece? kingSide = kingSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == theKingPiece.StartColumn);
 
-                if ((currentPiece as Rook != null) || (currentPiece as Queen != null))
+                if ((opponentSide as Rook != null) || (opponentSide as Queen != null))
                     return true;
-                if ((currentPiece != null) || (opponentPiece != null))
+                if ((opponentSide != null) || (kingSide != null))
                     return false;
             }
             return false;
         }
-        private bool RookAndQueenAttackRight(Piece opponentKing, List<Piece> currentPieces, List<Piece> opponentPieces)
+        private bool RookAndQueenAttackRight(Piece theKingPiece, List<Piece> kingSidePieces, List<Piece> opponentSidePieces)
         {
-            for (var column = opponentKing.StartColumn + _directionOffsets[0]; column <= _edgeBoard[1]; column++)
+            for (var column = theKingPiece.StartColumn + _directionOffsets[0]; column <= _edgeBoard[1]; column++)
             {
-                Piece? currentPiece = currentPieces.FirstOrDefault(x => x.StartRow == opponentKing.StartRow && x.StartColumn == column);
-                Piece? opponentPiece = opponentPieces.FirstOrDefault(x => x.StartRow == opponentKing.StartRow && x.StartColumn == column);
+                Piece? opponentSide = opponentSidePieces.FirstOrDefault(x => x.StartRow == theKingPiece.StartRow && x.StartColumn == column);
+                Piece? kingSide = kingSidePieces.FirstOrDefault(x => x.StartRow == theKingPiece.StartRow && x.StartColumn == column);
 
-                if ((currentPiece as Rook != null) || (currentPiece as Queen != null))
+                if ((opponentSide as Rook != null) || (opponentSide as Queen != null))
                     return true;
-                if ((currentPiece != null) || (opponentPiece != null))
+                if ((opponentSide != null) || (kingSide != null))
                     return false;
             }
             return false;
         }
-        private bool RookAndQueenAttackLeft(Piece opponentKing, List<Piece> currentPieces, List<Piece> opponentPieces)
+        private bool RookAndQueenAttackLeft(Piece theKingPiece, List<Piece> kingSidePieces, List<Piece> opponentSidePieces)
         {
-            for (var column = opponentKing.StartColumn + _directionOffsets[1]; column >= _edgeBoard[0]; column--)
+            for (var column = theKingPiece.StartColumn + _directionOffsets[1]; column >= _edgeBoard[0]; column--)
             {
-                Piece? currentPiece = currentPieces.FirstOrDefault(x => x.StartRow == opponentKing.StartRow && x.StartColumn == column);
-                Piece? opponentPiece = opponentPieces.FirstOrDefault(x => x.StartRow == opponentKing.StartRow && x.StartColumn == column);
+                Piece? opponentSide = opponentSidePieces.FirstOrDefault(x => x.StartRow == theKingPiece.StartRow && x.StartColumn == column);
+                Piece? kingSide = kingSidePieces.FirstOrDefault(x => x.StartRow == theKingPiece.StartRow && x.StartColumn == column);
 
-                if ((currentPiece as Rook != null) || (currentPiece as Queen != null))
+                if ((opponentSide as Rook != null) || (opponentSide as Queen != null))
                     return true;
-                if ((currentPiece != null) || (opponentPiece != null))
+                if ((opponentSide != null) || (kingSide != null))
                     return false;
             }
             return false;
         }
 
-        private bool CheckTheMovesOfQueenAndBishop(Piece opponentKing, List<Piece> currentPieces, List<Piece> opponentPieces)
+        private bool CheckTheMovesOfQueenAndBishop(Piece theKingPiece, List<Piece> kingSidePieces, List<Piece> opponentSidePieces)
         {
             bool itIsCheck;
 
-            itIsCheck = BishopAndQueenAttackTopLeft(opponentKing, currentPieces, opponentPieces);
+            itIsCheck = BishopAndQueenAttackTopLeft(theKingPiece, kingSidePieces, opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = BishopAndQueenAttackTopRight(opponentKing, currentPieces, opponentPieces);
+            itIsCheck = BishopAndQueenAttackTopRight(theKingPiece, kingSidePieces, opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = BishopAndQueenAttackBottomLeft(opponentKing, currentPieces, opponentPieces);
+            itIsCheck = BishopAndQueenAttackBottomLeft(theKingPiece, kingSidePieces, opponentSidePieces);
             if (itIsCheck == true) return true;
-            itIsCheck = BishopAndQueenAttackBottomRight(opponentKing, currentPieces, opponentPieces);
+            itIsCheck = BishopAndQueenAttackBottomRight(theKingPiece, kingSidePieces, opponentSidePieces);
             if (itIsCheck == true) return true;
 
             return itIsCheck;
         }
-
-        private bool BishopAndQueenAttackTopLeft(Piece opponentKing, List<Piece> currentPieces, List<Piece> opponentPieces)
+        private bool BishopAndQueenAttackTopLeft(Piece theKingPiece, List<Piece> kingSidePieces, List<Piece> opponentSidePieces)
         {
-            var column = opponentKing.StartColumn;
+            var column = theKingPiece.StartColumn;
 
-            for (var row = opponentKing.StartRow + _directionOffsets[0]; row <= _edgeBoard[1]; row++)
+            for (var row = theKingPiece.StartRow + _directionOffsets[0]; row <= _edgeBoard[1]; row++)
             {
                 column--;
                 if (column > _edgeBoard[1])
                     break;
 
-                Piece? currentPiece = currentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
-                Piece? opponentPiece = opponentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+                Piece? opponentSide = opponentSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+                Piece? kingSide = kingSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
 
-                if ((currentPiece as Bishop != null) || (currentPiece as Queen != null))
+                if ((opponentSide as Bishop != null) || (opponentSide as Queen != null))
                     return true;
-                if ((currentPiece != null) || (opponentPiece != null))
+                if ((opponentSide != null) || (kingSide != null))
                     return false;
             }
             return false;
         }
-        private bool BishopAndQueenAttackTopRight(Piece opponentKing, List<Piece> currentPieces, List<Piece> opponentPieces)
+        private bool BishopAndQueenAttackTopRight(Piece theKingPiece, List<Piece> kingSidePieces, List<Piece> opponentSidePieces)
         {
-            var column = opponentKing.StartColumn;
+            var column = theKingPiece.StartColumn;
 
-            for (var row = opponentKing.StartRow + _directionOffsets[0]; row <= _edgeBoard[1]; row++)
+            for (var row = theKingPiece.StartRow + _directionOffsets[0]; row <= _edgeBoard[1]; row++)
             {
                 column++;
                 if (column > _edgeBoard[1])
                     break;   
 
-                Piece? currentPiece = currentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
-                Piece? opponentPiece = opponentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+                Piece? opponentSide = opponentSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+                Piece? kingSide = kingSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
 
-                if ((currentPiece as Bishop != null) || (currentPiece as Queen != null))
+                if ((opponentSide as Bishop != null) || (opponentSide as Queen != null))
                     return true;
-                if ((currentPiece != null) || (opponentPiece != null))
+                if ((opponentSide != null) || (kingSide != null))
                     return false;
             }
             return false;
         }
-        private bool BishopAndQueenAttackBottomLeft(Piece opponentKing, List<Piece> currentPieces, List<Piece> opponentPieces)
+        private bool BishopAndQueenAttackBottomLeft(Piece theKingPiece, List<Piece> kingSidePieces, List<Piece> opponentSidePieces)
         {
-            var column = opponentKing.StartColumn;
+            var column = theKingPiece.StartColumn;
 
-            for (var row = opponentKing.StartRow + _directionOffsets[1]; row >= _edgeBoard[0]; row--)
+            for (var row = theKingPiece.StartRow + _directionOffsets[1]; row >= _edgeBoard[0]; row--)
             {
                 column--;
                 if (column > _edgeBoard[1])
                     break;
 
-                Piece? currentPiece = currentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
-                Piece? opponentPiece = opponentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+                Piece? opponentSide = opponentSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+                Piece? kingSide = kingSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
 
-                if ((currentPiece as Bishop != null) || (currentPiece as Queen != null))
+                if ((opponentSide as Bishop != null) || (opponentSide as Queen != null))
                     return true;
-                if ((currentPiece != null) || (opponentPiece != null))
+                if ((opponentSide != null) || (kingSide != null))
                     return false;
             }
             return false;
         }
-        private bool BishopAndQueenAttackBottomRight(Piece opponentKing, List<Piece> currentPieces, List<Piece> opponentPieces)
+        private bool BishopAndQueenAttackBottomRight(Piece theKingPiece, List<Piece> kingSidePieces, List<Piece> opponentSidePieces)
         {
-            var column = opponentKing.StartColumn;
+            var column = theKingPiece.StartColumn;
 
-            for (var row = opponentKing.StartRow + _directionOffsets[1]; row >= _edgeBoard[0]; row--)
+            for (var row = theKingPiece.StartRow + _directionOffsets[1]; row >= _edgeBoard[0]; row--)
             {
                 column++;
                 if (column > _edgeBoard[1])
                     break;
 
-                Piece? currentPiece = currentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
-                Piece? opponentPiece = opponentPieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+                Piece? opponentSide = opponentSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
+                Piece? kingSide = kingSidePieces.FirstOrDefault(x => x.StartRow == row && x.StartColumn == column);
 
-                if ((currentPiece as Bishop != null) || (currentPiece as Queen != null))
+                if ((opponentSide as Bishop != null) || (opponentSide as Queen != null))
                     return true;
-                if ((currentPiece != null) || (opponentPiece != null))
+                if ((opponentSide != null) || (kingSide != null))
                     return false;
             }
             return false;

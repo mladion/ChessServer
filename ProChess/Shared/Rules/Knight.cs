@@ -54,5 +54,15 @@ namespace Shared.Rules
             cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], StartColumn + _directionOffsets[3], whitePieces, blackPieces);
             cellsPossible.AddNotNullableItem(cellPossible);
         }
+        public override Piece Clone()
+        {
+            return new Knight
+            {
+                Color = Color,
+                Image = Image,
+                StartColumn = StartColumn,
+                StartRow = StartRow
+            };
+        }
     }
 }

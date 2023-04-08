@@ -100,5 +100,15 @@ namespace Shared.Rules
 
             return null;
         }
+        public override Piece Clone()
+        {
+            return new Pawn
+            {
+                Color = Color,
+                Image = Image,
+                StartColumn = StartColumn,
+                StartRow = StartRow
+            };
+        }
     }
 }

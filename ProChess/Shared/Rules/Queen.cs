@@ -190,5 +190,15 @@ namespace Shared.Rules
                     break;
             }
         }
+        public override Piece Clone()
+        {
+            return new Queen
+            {
+                Color = Color,
+                Image = Image,
+                StartColumn = StartColumn,
+                StartRow = StartRow
+            };
+        }
     }
 }

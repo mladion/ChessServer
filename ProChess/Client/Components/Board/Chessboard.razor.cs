@@ -14,7 +14,6 @@ namespace Client.Components.Board
 
         //Some new variables for detection of check 
         Piece? KingUnderCheck = null;
-        List <Cell>? KingsCheckFromPieces = null;
 
         InCheckPossibility IsCheckPossible = new InCheckPossibility();
         //Changes in main code to be discussed 
@@ -76,8 +75,22 @@ namespace Client.Components.Board
 
         private void KingPossitionEvaluate() //List<Cell>
         {
+            var BKingHere = _blackPieces.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
+            var kingBlack = new King();
+
+            if (BKingHere != null)
+                kingBlack = (King)BKingHere;
+
+            var WKingHere = _whitePieces.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
+            var kingWhite = new King();
+
+            if (WKingHere != null)
+                kingWhite = (King)WKingHere;
+
             // save in this flag if there are check
-            KingUnderCheck = IsCheckPossible.EvaluateCellsForPossibleCheck(activePiece, _whitePieces, _blackPieces);
+            KingUnderCheck = IsCheckPossible.EvaluateCellsForPossibleCheck(kingBlack, _whitePieces, _blackPieces); //activePiece
+            if (KingUnderCheck == null)
+                KingUnderCheck = IsCheckPossible.EvaluateCellsForPossibleCheck(kingWhite, _whitePieces, _blackPieces);
             //Check if current possible positions of activePiece, could create a check for one of kings
             //return IsCheckPossible.CouldPossibleCellsCreateCheck(activePiece, cellsPossible, _whitePieces, _blackPieces);
         }

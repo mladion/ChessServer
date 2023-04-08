@@ -227,5 +227,15 @@ namespace Shared.Rules
                 }
             }
         }
+        public override Piece Clone()
+        {
+            return new King
+            {
+                Color = Color,
+                Image = Image,
+                StartColumn = StartColumn,
+                StartRow = StartRow
+            };
+        }
     }
 }
