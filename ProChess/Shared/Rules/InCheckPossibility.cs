@@ -14,43 +14,40 @@ namespace Shared.Rules
         public List<Cell> CouldPossibleCellsCreateCheck(Piece? activePiece, List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
 
-            List<Piece> whitePiecesCopy = new List<Piece>();
+            List<Piece> whitePiecesCopy = new List<Piece>(); //Create the clone of existing list of whitePieces
             foreach (var piece in whitePieces)
             {
                 whitePiecesCopy.Add(piece.Clone());
             }
 
-            List<Piece> blackPiecesCopy = new List<Piece>();
+            List<Piece> blackPiecesCopy = new List<Piece>(); //Create the clone of existing list of blackPieces
             foreach (var piece in blackPieces)
             {
                 blackPiecesCopy.Add(piece.Clone());
             }
 
             var activePieceCopy = whitePiecesCopy.FirstOrDefault(x => x.StartColumn == activePiece.StartColumn && x.StartRow == activePiece.StartRow);
-            if (activePieceCopy == null)
+            if (activePieceCopy == null) // Find active piece in clone lists of pieces 
             {
                 activePieceCopy = blackPiecesCopy.FirstOrDefault(x => x.StartColumn == activePiece.StartColumn && x.StartRow == activePiece.StartRow);
             }
 
-            //---------------------------------------------------------------------
-            Piece? KingUnderAtack = null;
-            List<Piece> kingSidePieces = new List<Piece>();
-            List<Piece> opponentSidePieces = new List<Piece>();
-            Piece? theKingPiece = null;
-
             var BKingHere = blackPiecesCopy.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
-            var kingBlack = new King();
+            var kingBlack = new King(); //Find black king in clone list
 
             if (BKingHere != null)
                 kingBlack = (King)BKingHere;
 
             var WKingHere = whitePiecesCopy.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
-            var kingWhite = new King();
+            var kingWhite = new King(); //Find white king in clone list
 
             if (WKingHere != null)
                 kingWhite = (King)WKingHere;
 
-            // find out what color of figures are played by current player 
+            Piece? KingUnderAtack = null; // determen sides of player
+            List<Piece> kingSidePieces = new List<Piece>();
+            List<Piece> opponentSidePieces = new List<Piece>();
+            Piece? theKingPiece = null;
             if (activePiece.Color == PieceColor.White)
             {
                 theKingPiece = kingWhite;
@@ -63,16 +60,17 @@ namespace Shared.Rules
                 kingSidePieces = blackPiecesCopy;
                 opponentSidePieces = whitePiecesCopy;
             }
-            //---------------------------------------------------------------------
 
-            List<Cell> cellsPossible_modificated = new();
+            List<Cell> cellsPossible_modificated = new(); 
 
-            for (int i = 0; i < cellsPossible.Count; i++)
+            for (int i = 0; i < cellsPossible.Count; i++) // pasing of list of possible moves for active figure 
             {
                 var cell = cellsPossible[i];
-                activePieceCopy.MoveOrAttack(cell, whitePiecesCopy, blackPiecesCopy);
-
-                KingUnderAtack = DetectPossibleCheck(theKingPiece, kingSidePieces, opponentSidePieces);
+                activePieceCopy.MoveOrAttack(cell, whitePiecesCopy, blackPiecesCopy); //move o active piece on posible cell
+                //----------------------------------------------
+                // need a test, future problem: after deleting of the figure, it is no more on board. not initial placing  
+                //----------------------------------------------
+                KingUnderAtack = DetectPossibleCheck(theKingPiece, kingSidePieces, opponentSidePieces);// verification if move from above create check 
 
                 if (KingUnderAtack == null)
                 {
