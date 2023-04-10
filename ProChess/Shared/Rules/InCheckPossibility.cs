@@ -66,15 +66,29 @@ namespace Shared.Rules
             for (int i = 0; i < cellsPossible.Count; i++) // pasing of list of possible moves for active figure 
             {
                 var cell = cellsPossible[i];
-                activePieceCopy.MoveOrAttack(cell, whitePiecesCopy, blackPiecesCopy); //move o active piece on posible cell
-                //----------------------------------------------
-                // need a test, future problem: after deleting of the figure, it is no more on board. not initial placing  
-                //----------------------------------------------
+                Piece? hasPiece = null;
+                if (cell.ContainsPiece == true)
+                {
+                    hasPiece = opponentSidePieces.FirstOrDefault(x => x.StartRow == cell.Row && x.StartColumn == cell.Column);
+
+                    if (hasPiece != null)
+                    {
+                        opponentSidePieces.Remove(hasPiece);
+                    }
+                }
+                activePieceCopy.StartRow = cell.Row;
+                activePieceCopy.StartColumn = cell.Column;
+
                 KingUnderAtack = DetectPossibleCheck(theKingPiece, kingSidePieces, opponentSidePieces);// verification if move from above create check 
 
                 if (KingUnderAtack == null)
                 {
                      cellsPossible_modificated.Add(cell);
+                }
+
+                if (hasPiece != null)
+                {
+                    opponentSidePieces.Add(hasPiece);
                 }
             }
             return cellsPossible_modificated;
