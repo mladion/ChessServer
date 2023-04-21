@@ -1,7 +1,8 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.SignalR.Client;
+@inject HttpClient Http
 
-@if (inGame)
+@if (@inGame)
 {
     <div id="app">
         <Chessboard />
@@ -11,46 +12,11 @@ else
 {
     <button @onclick="CreateGame">Create Game</button>
 
-    @foreach (string tableId in tables!)
+    @if (tables != null)
     {
-        <button @onclick="() => JoinGame(tableId)">Join Game @tableId</button>
-    }
-}
-
-
-@code {
-    HubConnection hubConnection = new HubConnectionBuilder().WithUrl("https://localhost:7197/connect").Build();
-
-    bool inGame = false;
-
-    List<string>? tables = new List<string>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        await RefreshTables();
-    }
-
-    public async Task RefreshTables()
-    {
-        HttpClient httpClient = new HttpClient();
-
-        tables = await httpClient.GetFromJsonAsync<List<string>>("https://localhost:7197/table/getTables");
-    }
-
-    public async Task CreateGame()
-    {
-        await hubConnection.StartAsync();
-
-        string tableId = Guid.NewGuid().ToString();
-        await hubConnection.SendAsync("JoinTable", tableId);
-        inGame = true;
-    }
-
-    public async Task JoinGame(string gameId)
-    {
-        await hubConnection.StartAsync();
-
-        await hubConnection.SendAsync("JoinTable", gameId);
-        inGame = true;
+        @foreach (string tableId in tables)
+        {
+            <button @onclick="() => JoinGame(tableId)">Join Game @tableId</button>
+        }
     }
 }
