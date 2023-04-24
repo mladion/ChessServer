@@ -8,6 +8,8 @@ namespace Client.Pages
         HubConnection hubConnection = new HubConnectionBuilder().WithUrl("https://localhost:7197/connect").Build();
 
         bool inGame = false;
+        bool isWhitePlayer = true;
+        string tableId = "";
 
         List<string>? tables = new List<string>();
 
@@ -25,7 +27,7 @@ namespace Client.Pages
         {
             await hubConnection.StartAsync();
 
-            string tableId = Guid.NewGuid().ToString();
+            tableId = Guid.NewGuid().ToString();
             await hubConnection.SendAsync("JoinTable", tableId);
             inGame = true;
         }
@@ -33,7 +35,8 @@ namespace Client.Pages
         public async Task JoinGame(string gameId)
         {
             await hubConnection.StartAsync();
-
+            this.tableId = gameId;
+            isWhitePlayer = false;
             await hubConnection.SendAsync("JoinTable", gameId);
             inGame = true;
         }

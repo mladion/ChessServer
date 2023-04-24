@@ -2,6 +2,7 @@
 using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.SignalR.Client;
 using Shared.Data;
 using Shared.Rules;
 
@@ -12,6 +13,9 @@ namespace Client.Components.Board
         #region Parameters
 
         [CascadingParameter] IModalService Modal { get; set; } = default!;
+        [Parameter] public HubConnection HubConnection { get; set; } = default!;
+        [Parameter] public string TableId { get; set; } = default!;
+        [Parameter] public bool IsWhitePlayer { get; set; }
 
         #endregion
 
@@ -44,10 +48,29 @@ namespace Client.Components.Board
 
             _blackPieces = gamePieces.InitializationBlackPieces();
             _whitePieces = gamePieces.InitializationWhitePieces();
+
+            HubConnection.On<int, int, int, int>("Move", ServerMoveAsync);
+        }
+
+        private async Task ServerMoveAsync(int previousRow, int previousColumn, int newRow, int newColumn)
+        {
+            var piece = _blackPieces.FirstOrDefault(x => x.StartColumn == previousColumn && x.StartRow == previousRow);
+            if (piece == null)
+            {
+                piece = _whitePieces.FirstOrDefault(x => x.StartColumn == previousColumn && x.StartRow == previousRow);
+            }
+            activePiece = piece;
+            EvaluatePieceSpots();
+            await MoveOrAttackPiece(new Cell(newRow, newColumn));
         }
 
         private void ClickOnPiece(MouseEventArgs e, Piece piece)
         {
+            if (_whiteTurn != IsWhitePlayer)
+            {
+                return;
+            }
+
             if (activePiece == piece)
             {
                 activePiece = null;
@@ -90,6 +113,8 @@ namespace Client.Components.Board
 
             if (activePiece != null)
             {
+                await HubConnection.SendAsync("Move", TableId, activePiece.StartRow, activePiece.StartColumn, cell.Row, cell.Column);
+
                 activePiece.MoveOrAttack(cell, _whitePieces, _blackPieces);
 
                 if (activePiece as Pawn != null && (activePiece.StartRow == _positionsTransformation[0] ||
@@ -116,6 +141,7 @@ namespace Client.Components.Board
                 activePiece = null;
                 _whiteTurn = !_whiteTurn;
                 EvaluatePieceSpots();
+                StateHasChanged();
             }
         }
     }

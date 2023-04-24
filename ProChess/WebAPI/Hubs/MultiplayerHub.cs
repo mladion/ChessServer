@@ -31,5 +31,10 @@ namespace WebAPI.Hubs
                 _tableManager.Tables.Add(tableId, 1);
             }
         }
+
+        public async Task Move(string tableId, int previousRow, int previousColumn, int newRow, int newColumn)
+        {
+            await Clients.GroupExcept(tableId, Context.ConnectionId).SendAsync("Move", previousRow, previousColumn, newRow, newColumn);
+        }
     }
 }

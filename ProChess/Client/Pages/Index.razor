@@ -5,7 +5,7 @@
 @if (@inGame)
 {
     <div id="app">
-        <Chessboard />
+        <Chessboard HubConnection="@hubConnection" TableId="@tableId" IsWhitePlayer="@isWhitePlayer"/>
     </div>
 }
 else
