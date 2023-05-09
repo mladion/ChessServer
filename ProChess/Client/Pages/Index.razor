@@ -1,5 +1,22 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.SignalR.Client;
+@inject HttpClient Http
 
-<div id="app">
-    <Chessboard />
-</div>
+@if (@inGame)
+{
+    <div id="app">
+        <Chessboard HubConnection="@hubConnection" TableId="@tableId" IsWhitePlayer="@isWhitePlayer"/>
+    </div>
+}
+else
+{
+    <button @onclick="CreateGame">Create Game</button>
+
+    @if (tables != null)
+    {
+        @foreach (string tableId in tables)
+        {
+            <button @onclick="() => JoinGame(tableId)">Join Game @tableId</button>
+        }
+    }
+}
