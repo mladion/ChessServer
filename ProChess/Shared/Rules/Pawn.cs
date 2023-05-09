@@ -12,7 +12,7 @@ namespace Shared.Rules
         {
             List<Cell> cellsPossible = new();
 
-            CheckTheFrontMove(cellsPossible, whitePieces, blackPieces);
+            CheckTheFrontMove(whitePieces, blackPieces);
             CheckTheSpecialFrontMove(cellsPossible, whitePieces, blackPieces);
             CheckTheMovesOfTheDiagonals(cellsPossible, whitePieces, blackPieces);
 
@@ -32,7 +32,7 @@ namespace Shared.Rules
             return null;
         }
 
-        private void CheckTheFrontMove(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private Cell? CheckTheFrontMove(List<Piece> whitePieces, List<Piece> blackPieces)
         {
             Cell? cellPossible = null;
 
@@ -45,7 +45,8 @@ namespace Shared.Rules
                 cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], this.StartColumn, whitePieces, blackPieces);
             }
 
-            cellsPossible.AddNotNullableItem(cellPossible);
+            return AddNotNullableItem(cellPossible);
+
         }
 
         private void CheckTheSpecialFrontMove(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
