@@ -1,4 +1,5 @@
 ﻿using Shared.Data;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Shared.Rules
 {
@@ -13,10 +14,10 @@ namespace Shared.Rules
         {
             List<Cell> cellsPossible = new();
 
-            CheckTheMovesAhead(cellsPossible, whitePieces, blackPieces);
-            CheckBackMoves(cellsPossible, whitePieces, blackPieces);
-            CheckTheMovesOnTheRight(cellsPossible, whitePieces, blackPieces);
-            CheckTheMovesOnTheLeft(cellsPossible, whitePieces, blackPieces);
+            cellsPossible.AddRange(CheckTheMovesAhead(whitePieces, blackPieces));
+            cellsPossible.AddRange(CheckBackMoves(whitePieces, blackPieces));
+            cellsPossible.AddRange(CheckTheMovesOnTheRight(whitePieces, blackPieces));
+            cellsPossible.AddRange(CheckTheMovesOnTheLeft(whitePieces, blackPieces));
 
             return cellsPossible;
         }
@@ -27,16 +28,16 @@ namespace Shared.Rules
             base.MoveOrAttack(cell, whitePieces, blackPieces);
         }
 
-        private void CheckTheMovesAhead(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private List<Cell> CheckTheMovesAhead(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            Cell? cellPossible = null;
+            List<Cell> cells = new List<Cell>();
 
             for (var row = this.StartRow + _directionOffsets[0]; row <= _edgeBoard[1]; row++)
             {
-                cellPossible = EvaluateCellForMovement(row, this.StartColumn, whitePieces, blackPieces);
+                var cellPossible = EvaluateCellForMovement(row, this.StartColumn, whitePieces, blackPieces);
                 if (cellPossible != null)
                 {
-                    cellsPossible.Add(cellPossible);
+                    cells.Add(cellPossible);
 
                     if (cellPossible.ContainsPiece)
                         break;
@@ -44,18 +45,20 @@ namespace Shared.Rules
                 else
                     break;
             }
+
+            return cells;
         }
 
-        private void CheckBackMoves(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private List<Cell> CheckBackMoves(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            Cell? cellPossible = null;
+            List<Cell> cells = new List<Cell>();
 
             for (var row = this.StartRow + _directionOffsets[1]; row >= _edgeBoard[0]; row--)
             {
-                cellPossible = EvaluateCellForMovement(row, this.StartColumn, whitePieces, blackPieces);
+                var cellPossible = EvaluateCellForMovement(row, this.StartColumn, whitePieces, blackPieces);
                 if (cellPossible != null)
                 {
-                    cellsPossible.Add(cellPossible);
+                    cells.Add(cellPossible);
 
                     if (cellPossible.ContainsPiece)
                         break;
@@ -63,18 +66,20 @@ namespace Shared.Rules
                 else
                     break;
             }
+
+            return cells;
         }
         
-        private void CheckTheMovesOnTheRight(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private List<Cell> CheckTheMovesOnTheRight(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            Cell? cellPossible = null;
+            List<Cell> cells = new List<Cell>();
 
             for (var column = this.StartColumn + _directionOffsets[0]; column <= _edgeBoard[1]; column++)
             {
-                cellPossible = EvaluateCellForMovement(this.StartRow, column, whitePieces, blackPieces);
+                var cellPossible = EvaluateCellForMovement(this.StartRow, column, whitePieces, blackPieces);
                 if (cellPossible != null)
                 {
-                    cellsPossible.Add(cellPossible);
+                    cells.Add(cellPossible);
 
                     if (cellPossible.ContainsPiece)
                         break;
@@ -82,18 +87,20 @@ namespace Shared.Rules
                 else
                     break;
             }
+
+            return cells;
         }
         
-        private void CheckTheMovesOnTheLeft(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private List<Cell> CheckTheMovesOnTheLeft(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            Cell? cellPossible = null;
+            List<Cell> cells = new List<Cell> ();
 
             for (var column = this.StartColumn + _directionOffsets[1]; column >= _edgeBoard[0]; column--)
             {
-                cellPossible = EvaluateCellForMovement(this.StartRow, column, whitePieces, blackPieces);
+                var cellPossible = EvaluateCellForMovement(this.StartRow, column, whitePieces, blackPieces);
                 if (cellPossible != null)
                 {
-                    cellsPossible.Add(cellPossible);
+                    cells.Add(cellPossible);
 
                     if (cellPossible.ContainsPiece)
                         break;
@@ -101,6 +108,10 @@ namespace Shared.Rules
                 else
                     break;
             }
+
+            return cells;
         }
+
+        
     }
 }

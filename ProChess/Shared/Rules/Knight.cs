@@ -11,48 +11,52 @@ namespace Shared.Rules
         {
             List<Cell> cellsPossible = new();
 
-            CheckTheMovesAhead(cellsPossible, whitePieces, blackPieces);
-            CheckBackMoves(cellsPossible, whitePieces, blackPieces);
-            CheckTheMovesOnTheRight(cellsPossible, whitePieces, blackPieces);
-            CheckTheMovesOnTheLeft(cellsPossible, whitePieces, blackPieces);
+            cellsPossible.AddRange(CheckTheMovesAhead(whitePieces, blackPieces));
+            cellsPossible.AddRange(CheckBackMoves(whitePieces, blackPieces));
+            cellsPossible.AddRange(CheckTheMovesOnTheRight(whitePieces, blackPieces));
+            cellsPossible.AddRange(CheckTheMovesOnTheLeft(whitePieces, blackPieces));
 
             return cellsPossible;
         }
 
-        private void CheckTheMovesAhead(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
-        {
-            var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[2], StartColumn + _directionOffsets[0], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+        private List<Cell> CheckTheMovesAhead(List<Piece> whitePieces, List<Piece> blackPieces)
+        {   
+            var cells = new List<Cell>();
 
-            cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[2], StartColumn + _directionOffsets[1], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            cells.AddNotNullableItem(EvaluateCellForMovement(this.StartRow + _directionOffsets[2], StartColumn + _directionOffsets[0], whitePieces, blackPieces));
+            cells.AddNotNullableItem(EvaluateCellForMovement(this.StartRow + _directionOffsets[2], StartColumn + _directionOffsets[1], whitePieces, blackPieces));
+
+            return cells;
         }
 
-        private void CheckBackMoves(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private List<Cell> CheckBackMoves(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[3], StartColumn + _directionOffsets[0], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            var cells = new List<Cell>();
+            
+            cells.AddNotNullableItem(EvaluateCellForMovement(this.StartRow + _directionOffsets[3], StartColumn + _directionOffsets[0], whitePieces, blackPieces));
+            cells.AddNotNullableItem(EvaluateCellForMovement(this.StartRow + _directionOffsets[3], StartColumn + _directionOffsets[1], whitePieces, blackPieces));
 
-            cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[3], StartColumn + _directionOffsets[1], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            return cells;
         }
 
-        private void CheckTheMovesOnTheRight(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private List<Cell> CheckTheMovesOnTheRight(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[0], StartColumn + _directionOffsets[2], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
-
-            cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], StartColumn + _directionOffsets[2], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            var cells = new List<Cell>();
+            
+            cells.AddNotNullableItem(EvaluateCellForMovement(this.StartRow + _directionOffsets[0], StartColumn + _directionOffsets[2], whitePieces, blackPieces));
+            cells.AddNotNullableItem(EvaluateCellForMovement(this.StartRow + _directionOffsets[1], StartColumn + _directionOffsets[2], whitePieces, blackPieces));
+            
+            return cells;
         }
 
-        private void CheckTheMovesOnTheLeft(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private List<Cell> CheckTheMovesOnTheLeft(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[0], StartColumn + _directionOffsets[3], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            var cells = new List<Cell>();
 
-            cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], StartColumn + _directionOffsets[3], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            cells.AddNotNullableItem(EvaluateCellForMovement(this.StartRow + _directionOffsets[0], StartColumn + _directionOffsets[3], whitePieces, blackPieces));
+            cells.AddNotNullableItem(EvaluateCellForMovement(this.StartRow + _directionOffsets[1], StartColumn + _directionOffsets[3], whitePieces, blackPieces));
+
+            return cells;
         }
     }
 }

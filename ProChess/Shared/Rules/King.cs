@@ -17,14 +17,14 @@ namespace Shared.Rules
         {
             List<Cell> cellsPossible = new();
 
-            CheckTheMoveAhead(cellsPossible, whitePieces, blackPieces);
-            CheckBackMove(cellsPossible, whitePieces, blackPieces);
-            CheckTheMoveOnTheLeft(cellsPossible, whitePieces, blackPieces);
-            CheckTheMoveOnTheRight(cellsPossible, whitePieces, blackPieces);
-            CheckTheMoveOnTheTopLeftDiagonal(cellsPossible, whitePieces, blackPieces);
-            CheckTheMoveOnTheTopRightDiagonal(cellsPossible, whitePieces, blackPieces);
-            CheckTheMoveOnTheBottomLeftDiagonal(cellsPossible, whitePieces, blackPieces);
-            CheckTheMoveOnTheBottomRightDiagonal(cellsPossible, whitePieces, blackPieces);
+            cellsPossible.AddNotNullableItem(CheckTheMoveAhead(whitePieces, blackPieces));
+            cellsPossible.AddNotNullableItem(CheckBackMove(whitePieces, blackPieces));
+            cellsPossible.AddNotNullableItem(CheckTheMoveOnTheLeft(whitePieces, blackPieces));
+            cellsPossible.AddNotNullableItem(CheckTheMoveOnTheRight(whitePieces, blackPieces));
+            cellsPossible.AddNotNullableItem(CheckTheMoveOnTheTopLeftDiagonal(whitePieces, blackPieces));
+            cellsPossible.AddNotNullableItem(CheckTheMoveOnTheTopRightDiagonal(whitePieces, blackPieces));
+            cellsPossible.AddNotNullableItem(CheckTheMoveOnTheBottomLeftDiagonal(whitePieces, blackPieces));
+            cellsPossible.AddNotNullableItem(CheckTheMoveOnTheBottomRightDiagonal(whitePieces, blackPieces));
 
             if (!this.IsMoved)
             {
@@ -101,52 +101,44 @@ namespace Shared.Rules
             }
         }
 
-        private void CheckTheMoveAhead(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private Cell? CheckTheMoveAhead(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[0], this.StartColumn, whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            return EvaluateCellForMovement(this.StartRow + _directionOffsets[0], this.StartColumn, whitePieces, blackPieces);
         }
 
-        private void CheckBackMove(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private Cell? CheckBackMove(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], this.StartColumn, whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            return EvaluateCellForMovement(this.StartRow + _directionOffsets[1], this.StartColumn, whitePieces, blackPieces);
         }
 
-        private void CheckTheMoveOnTheLeft(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private Cell? CheckTheMoveOnTheLeft(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellPossible = EvaluateCellForMovement(this.StartRow, this.StartColumn + _directionOffsets[1], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            return EvaluateCellForMovement(this.StartRow, this.StartColumn + _directionOffsets[1], whitePieces, blackPieces);
         }
 
-        private void CheckTheMoveOnTheRight(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private Cell? CheckTheMoveOnTheRight(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellPossible = EvaluateCellForMovement(this.StartRow, this.StartColumn + _directionOffsets[0], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            return EvaluateCellForMovement(this.StartRow, this.StartColumn + _directionOffsets[0], whitePieces, blackPieces);
         }
 
-        private void CheckTheMoveOnTheTopLeftDiagonal(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private Cell? CheckTheMoveOnTheTopLeftDiagonal(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[0], this.StartColumn + _directionOffsets[1], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            return EvaluateCellForMovement(this.StartRow + _directionOffsets[0], this.StartColumn + _directionOffsets[1], whitePieces, blackPieces);
         }
 
-        private void CheckTheMoveOnTheTopRightDiagonal(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private Cell? CheckTheMoveOnTheTopRightDiagonal(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[0], this.StartColumn + _directionOffsets[0], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            return EvaluateCellForMovement(this.StartRow + _directionOffsets[0], this.StartColumn + _directionOffsets[0], whitePieces, blackPieces);
         }
 
-        private void CheckTheMoveOnTheBottomLeftDiagonal(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private Cell? CheckTheMoveOnTheBottomLeftDiagonal(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], this.StartColumn + _directionOffsets[1], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            return EvaluateCellForMovement(this.StartRow + _directionOffsets[1], this.StartColumn + _directionOffsets[1], whitePieces, blackPieces);
         }
 
-        private void CheckTheMoveOnTheBottomRightDiagonal(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private Cell? CheckTheMoveOnTheBottomRightDiagonal(List<Piece> whitePieces, List<Piece> blackPieces)
         {
-            var cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], this.StartColumn + _directionOffsets[0], whitePieces, blackPieces);
-            cellsPossible.AddNotNullableItem(cellPossible);
+            return EvaluateCellForMovement(this.StartRow + _directionOffsets[1], this.StartColumn + _directionOffsets[0], whitePieces, blackPieces);
         }
 
         private void CheckCastlingKingside(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
