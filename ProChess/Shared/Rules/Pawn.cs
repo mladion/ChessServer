@@ -12,9 +12,9 @@ namespace Shared.Rules
         {
             List<Cell> cellsPossible = new();
 
-            CheckTheFrontMove(whitePieces, blackPieces);
-            CheckTheSpecialFrontMove(cellsPossible, whitePieces, blackPieces);
-            CheckTheMovesOfTheDiagonals(cellsPossible, whitePieces, blackPieces);
+            cellsPossible.AddNotNullableItem(CheckTheFrontMove(whitePieces, blackPieces));
+            cellsPossible.AddNotNullableItem(CheckTheSpecialFrontMove(cellsPossible, whitePieces, blackPieces));
+            cellsPossible.AddRange(CheckTheMovesOfTheDiagonals(whitePieces, blackPieces));
 
             return cellsPossible;
         }
@@ -45,11 +45,11 @@ namespace Shared.Rules
                 cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], this.StartColumn, whitePieces, blackPieces);
             }
 
-            return AddNotNullableItem(cellPossible);
+            return cellPossible;
 
         }
 
-        private void CheckTheSpecialFrontMove(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private Cell? CheckTheSpecialFrontMove(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
         {
             Cell? cellPossible = null;
 
@@ -63,14 +63,15 @@ namespace Shared.Rules
                 {
                     cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[3], this.StartColumn, whitePieces, blackPieces);
                 }
-
-                cellsPossible.AddNotNullableItem(cellPossible);
             }
+
+            return cellPossible;
         }
 
-        private void CheckTheMovesOfTheDiagonals(List<Cell> cellsPossible, List<Piece> whitePieces, List<Piece> blackPieces)
+        private List<Cell> CheckTheMovesOfTheDiagonals(List<Piece> whitePieces, List<Piece> blackPieces)
         {
             Cell? cellPossible = null;
+            List<Cell> cellsPossible = new();
 
             if (this.Color == PieceColor.White)
             {
@@ -88,6 +89,8 @@ namespace Shared.Rules
                 cellPossible = EvaluateCellForAttack(this.StartRow + _directionOffsets[1], this.StartColumn + _directionOffsets[1], whitePieces);
                 cellsPossible.AddNotNullableItem(cellPossible);
             }
+
+            return cellsPossible;
         }
 
         private Cell? EvaluateCellForAttack(int row, int column, List<Piece> pieces)
