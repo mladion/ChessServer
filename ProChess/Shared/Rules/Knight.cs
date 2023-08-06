@@ -7,6 +7,21 @@ namespace Shared.Rules
     {
         private readonly int[] _directionOffsets = { 1, -1, 2, -2 };
 
+        public Knight() { }
+
+        public Knight(Piece piece)
+        {
+            StartRow = piece.StartRow;
+            StartColumn = piece.StartColumn;
+            Color = piece.Color;
+            Image = piece.Image;
+        }
+
+        public override Piece Clone(Piece piece)
+        {
+            return new Knight(piece);
+        }
+
         public override List<Cell> GetMovementPossibilities(List<Piece> whitePieces, List<Piece> blackPieces)
         {
             List<Cell> cellsPossible = new();
@@ -53,16 +68,6 @@ namespace Shared.Rules
 
             cellPossible = EvaluateCellForMovement(this.StartRow + _directionOffsets[1], StartColumn + _directionOffsets[3], whitePieces, blackPieces);
             cellsPossible.AddNotNullableItem(cellPossible);
-        }
-        public override Piece Clone()
-        {
-            return new Knight
-            {
-                Color = Color,
-                Image = Image,
-                StartColumn = StartColumn,
-                StartRow = StartRow
-            };
         }
     }
 }

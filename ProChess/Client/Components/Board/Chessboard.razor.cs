@@ -13,7 +13,7 @@ namespace Client.Components.Board
         IModalService Modal { get; set; } = default!;
 
         //Some new variables for detection of check 
-        Piece? KingUnderCheck = null;
+        //Piece? KingUnderCheck = null;
 
         InCheckPossibility IsCheckPossible = new InCheckPossibility();
         //Changes in main code to be discussed 
@@ -35,17 +35,14 @@ namespace Client.Components.Board
 
             _blackPieces = gamePieces.InitializationBlackPieces();
             _whitePieces = gamePieces.InitializationWhitePieces();
-
         }
 
         private void ClickOnPiece(MouseEventArgs e, Piece piece)
         {
             if (activePiece == piece)
             {
-                // ----------------------------------New Function Call--------------------------------------
                 // Do a verification of King's position and if there are detected a check, do it red
                 KingPossitionEvaluate();
-                // ----------------------------------Position in code---------------------------------------
                 activePiece = null;
                 EvaluatePieceSpots();
 
@@ -73,13 +70,13 @@ namespace Client.Components.Board
             }
         }
 
-        private void KingPossitionEvaluate() //List<Cell>
+        private Piece? KingPossitionEvaluate()
         {
-            var BKingHere = _blackPieces.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
+            var blackKingHere = _blackPieces.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
             var kingBlack = new King();
 
-            if (BKingHere != null)
-                kingBlack = (King)BKingHere;
+            if (blackKingHere != null)
+                kingBlack = (King)blackKingHere;
 
             var WKingHere = _whitePieces.Where(x => x.GetType() == typeof(King)).FirstOrDefault();
             var kingWhite = new King();
@@ -88,9 +85,11 @@ namespace Client.Components.Board
                 kingWhite = (King)WKingHere;
 
             // save in this flag if there are check
-            KingUnderCheck = IsCheckPossible.EvaluateCellsForPossibleCheck(kingBlack, _whitePieces, _blackPieces); //activePiece
-            if (KingUnderCheck == null)
-                KingUnderCheck = IsCheckPossible.EvaluateCellsForPossibleCheck(kingWhite, _whitePieces, _blackPieces);
+            var king = IsCheckPossible.EvaluateCellsForPossibleCheck(kingBlack, _whitePieces, _blackPieces); //activePiece
+            if (king == null)
+                king = IsCheckPossible.EvaluateCellsForPossibleCheck(kingWhite, _whitePieces, _blackPieces);
+
+            return king;
             //Check if current possible positions of activePiece, could create a check for one of kings
             //return IsCheckPossible.CouldPossibleCellsCreateCheck(activePiece, cellsPossible, _whitePieces, _blackPieces);
         }

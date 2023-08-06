@@ -1,16 +1,15 @@
-﻿using Shared.Rules; //Ask about this adding from Visual Studio???
-
-namespace Shared.Data
+﻿namespace Shared.Data
 {
     public abstract class Piece
     {
-        public PieceColor Color { get; set; }
         public int StartRow { get; set; }
         public int StartColumn { get; set; }
+        public PieceColor Color { get; set; }
         public string Image { get; set; } = "";
 
         private readonly int[] _edgeBoard = { 0, 7 };
 
+        public abstract Piece Clone(Piece piece);
         public abstract List<Cell> GetMovementPossibilities(List<Piece> whitePieces, List<Piece> blackPieces);
 
         public virtual Cell? EvaluateCellForMovement(int row, int column, List<Piece> whitePieces, List<Piece> blackPieces)
@@ -53,6 +52,5 @@ namespace Shared.Data
             this.StartRow = cell.Row;
             this.StartColumn = cell.Column;
         }
-        public abstract Piece Clone();
     }
 }

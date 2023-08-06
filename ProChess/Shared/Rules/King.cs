@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Shared.Data;
+﻿using Shared.Data;
 using Shared.Helpers.Extensions;
 
 namespace Shared.Rules
@@ -12,6 +11,21 @@ namespace Shared.Rules
         private const int _columnCastleQueenside = 2;
         private readonly int[] _directionOffsets = { 1, -1 };
         private readonly int[] _edgeBoardAndRooksPosition = { 0, 7 };
+
+        public King() { }
+
+        public King(Piece piece)
+        {
+            StartRow = piece.StartRow;
+            StartColumn = piece.StartColumn;
+            Color = piece.Color;
+            Image = piece.Image;
+        }
+
+        public override Piece Clone(Piece piece)
+        {
+            return new King(piece);
+        }
 
         public override List<Cell> GetMovementPossibilities(List<Piece> whitePieces, List<Piece> blackPieces)
         {
@@ -85,10 +99,10 @@ namespace Shared.Rules
             this.IsMoved = true;
         }
 
-        private void MoveRookForCastle(List<Piece> pieces, int columnOfTheTargetedRook, int finalDestinationForRook)
+        private void MoveRookForCastle(List<Piece> pieces, int columnOfTargetedRook, int finalDestinationForRook)
         {
             Piece? localPiece = pieces.Where(x => x.GetType() == typeof(Rook) &&
-                x.StartRow == this.StartRow && x.StartColumn == columnOfTheTargetedRook).FirstOrDefault();
+                x.StartRow == this.StartRow && x.StartColumn == columnOfTargetedRook).FirstOrDefault();
 
             if (localPiece != null)
             {
@@ -169,7 +183,7 @@ namespace Shared.Rules
         {
             Piece? piece = null;
 
-            if (this.Color == PieceColor.White)
+            if (Color == PieceColor.White)
             {
                 piece = whitePieces.Find(x => x.StartRow == _edgeBoardAndRooksPosition[0] &&
                     x.StartColumn == rookColumn);
@@ -180,11 +194,9 @@ namespace Shared.Rules
                     x.StartColumn == rookColumn);
             }
 
-            Rook rook = new Rook();
-
             if (piece != null && piece.GetType() == typeof(Rook))
             {
-                rook = (Rook)piece;
+                Rook rook = new(piece);
 
                 if (!rook.IsMoved)
                 {
@@ -226,16 +238,6 @@ namespace Shared.Rules
                     }
                 }
             }
-        }
-        public override Piece Clone()
-        {
-            return new King
-            {
-                Color = Color,
-                Image = Image,
-                StartColumn = StartColumn,
-                StartRow = StartRow
-            };
         }
     }
 }
