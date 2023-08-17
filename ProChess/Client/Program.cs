@@ -2,8 +2,8 @@ global using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Client;
-using Blazored.Modal;
 using Client.Auth;
+using Blazored.Modal;
 using Blazored.LocalStorage;
 using Client.Auth.Service;
 

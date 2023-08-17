@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Data;
 using System.Text;
+using WebAPI.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<ChessDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ChessDatabase")));
@@ -35,15 +38,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-//builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1",
-//    new Microsoft.OpenApi.Models.OpenApiInfo
-//    {
-//        Title = "ProChess",
-//        Version = "v1",
-//    }));
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddSingleton<TableManager>();
 
 var app = builder.Build();
 
@@ -65,7 +63,6 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseSwagger();
-//app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "ProChess"));
 app.UseSwaggerUI();
 
 app.UseRouting();
@@ -75,6 +72,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
+app.MapHub<MultiplayerHub>("/connect");
 app.MapFallbackToFile("index.html");
 
 app.Run();
