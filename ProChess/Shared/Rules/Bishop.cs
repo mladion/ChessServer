@@ -8,6 +8,21 @@ namespace Shared.Rules
         private readonly int[] _edgeBoard = { 0, 7 };
         private readonly int[] _directionOffsets = { 1, -1 };
 
+        public Bishop() { }
+
+        public Bishop(Piece piece)
+        {
+            StartRow = piece.StartRow;
+            StartColumn = piece.StartColumn;
+            Color = piece.Color;
+            Image = piece.Image;
+        }
+
+        public override Piece Clone(Piece piece)
+        {
+            return new Bishop(piece);
+        }
+
         public override List<Cell> GetMovementPossibilities(List<Piece> whitePieces, List<Piece> blackPieces)
         {
             List<Cell> cellsPossible = new();
@@ -31,6 +46,7 @@ namespace Shared.Rules
                     break;
 
                 var cellPossible = EvaluateCellForMovement(row, --column, whitePieces, blackPieces);
+
                 if (cellPossible != null)
                 {
                     cells.Add(cellPossible);
@@ -57,6 +73,7 @@ namespace Shared.Rules
                     break;
 
                 var cellPossible = EvaluateCellForMovement(row, ++column, whitePieces, blackPieces);
+
                 if (cellPossible != null)
                 {
                     cells.Add(cellPossible);
@@ -83,6 +100,7 @@ namespace Shared.Rules
                     break;
 
                 var cellPossible = EvaluateCellForMovement(row, --column, whitePieces, blackPieces);
+
                 if (cellPossible != null)
                 {
                     cells.Add(cellPossible);
@@ -109,6 +127,7 @@ namespace Shared.Rules
                     break;
 
                 var cellPossible = EvaluateCellForMovement(row, ++column, whitePieces, blackPieces);
+
                 if (cellPossible != null)
                 {
                     cells.Add(cellPossible);

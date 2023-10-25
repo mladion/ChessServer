@@ -1,4 +1,3 @@
-﻿using Microsoft.VisualBasic;
 using Shared.Data;
 using Shared.Helpers.Extensions;
 
@@ -12,6 +11,21 @@ namespace Shared.Rules
         private const int _columnCastleQueenside = 2;
         private readonly int[] _directionOffsets = { 1, -1 };
         private readonly int[] _edgeBoardAndRooksPosition = { 0, 7 };
+
+        public King() { }
+
+        public King(Piece piece)
+        {
+            StartRow = piece.StartRow;
+            StartColumn = piece.StartColumn;
+            Color = piece.Color;
+            Image = piece.Image;
+        }
+
+        public override Piece Clone(Piece piece)
+        {
+            return new King(piece);
+        }
 
         public override List<Cell> GetMovementPossibilities(List<Piece> whitePieces, List<Piece> blackPieces)
         {

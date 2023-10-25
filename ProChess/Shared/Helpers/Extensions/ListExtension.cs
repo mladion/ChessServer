@@ -1,6 +1,4 @@
-﻿using Shared.Data;
-
-namespace Shared.Helpers.Extensions
+﻿namespace Shared.Helpers.Extensions
 {
     public static class ListExtension
     {

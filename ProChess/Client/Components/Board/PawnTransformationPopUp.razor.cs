@@ -10,8 +10,10 @@ namespace Client.Components.Board
     {
         [Parameter]
         public Piece? Piece { get; set; } = null;
+
         [CascadingParameter]
         BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
         private List<Piece> Pieces { get; set; } = new List<Piece>();
 
         protected override void OnInitialized()

@@ -26,6 +26,10 @@
         opacity: 0.5;
     }
 
+    .piece.check {
+        background-color: #c54a24;
+    }
+
 .row:nth-child(2n+1) .cell:nth-child(2n+1) {
     background: #f0d9b5;
 }

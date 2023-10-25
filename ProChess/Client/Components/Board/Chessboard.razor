@@ -17,13 +17,20 @@
 
             bool canMoveHere = cellsPossible.Where(x => x.Row == cell.Row && x.Column == cell.Column).Any();
 
+            bool thisKingIsInCheck = false;
+            var king = KingPossitionEvaluate();
+            if (king != null)
+                thisKingIsInCheck = king.StartRow == cell.Row && king.StartColumn == cell.Column;
+
             <div @onclick="() => MoveOrAttackPiece(cell)" class="cell">
                 <div class="@(canMoveHere ? "active-cell" : "")">
+                    <div class="@(thisKingIsInCheck ? "piece check" : "")">
                     @if (piece != null)
                     {
-                        <img @onclick="@(e => ClickOnPiece(e, piece))" src="@piece.Image" 
-                            class="piece @(piece == activePiece && piece != null ? "active" : "")" />
+                        <img @onclick="@(e => ClickOnPiece(e, piece))" src="@piece.Image"
+                        class="piece @(piece == activePiece && piece != null ? "active" : "")" />
                     }
+                    </div>
                 </div>
             </div>
         }
