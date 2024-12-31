@@ -37,9 +37,13 @@
             var pieces = new List<Piece>();
 
             if (this.Color == PieceColor.White)
+            {
                 pieces = blackPieces;
+            }
             else
+            {
                 pieces = whitePieces;
+            }
 
             var hasPiece = pieces.FirstOrDefault(x => x.StartRow == cell.Row && x.StartColumn == cell.Column);
 
