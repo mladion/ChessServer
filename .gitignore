@@ -3,8 +3,22 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# General
-**/.DS_Store
+# JetBrains Rider
+.idea/
+
+# OS generated files
+.DS_Store
+._*
+
+# Rider, VS for Mac
+.idea/
+.idea_modules/
+.idea/
+.idea/
+
+# Include any folders you want to exclude (e.g., build outputs)
+build/
+dist/
 
 # User-specific files
 *.rsuser
