@@ -1,5 +1,4 @@
 ﻿using Shared.Data;
-using System.Net.Http.Headers;
 
 namespace Shared.Rules
 {
