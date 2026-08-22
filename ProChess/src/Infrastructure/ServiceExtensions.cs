@@ -4,6 +4,7 @@ using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using Shared.Models;
 
 namespace Infrastructure;
 
