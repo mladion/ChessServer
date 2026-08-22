@@ -1,27 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+namespace Shared.Models;
 
-namespace Shared.Models
+public class Game
 {
-	public class Game
-	{
-        public Guid Id { get; set; }
-
-		[ForeignKey(nameof(WhiteUser))]
-		public string? WhiteUserId { get; set; }
-
-        [ForeignKey(nameof(BlackUser))]
-        public string? BlackUserId { get; set; }
-
-		public int WhiteELO { get; set; }
-		public int BlackELO { get; set; }
-		public int WhiteRatingDiff { get; set; }
-		public int BlackRatingDiff { get; set; }
-		public string Result { get; set; } = "";
-		public string GameMoves { get; set; } = "";
-		public TimeOnly TimeControl { get; set; }
-		public DateTime StartGameTime { get; set; } = DateTime.Now;
-		public DateTime EndGameTime { get; set; }
-        public virtual ApplicationUser WhiteUser { get; set; } = new ApplicationUser();
-        public virtual ApplicationUser BlackUser { get; set; } = new ApplicationUser();
-    }
+    public int Id { get; set; }
+    public string? WhiteUserId { get; set; }
+    public string? BlackUserId { get; set; }
+    public ApplicationUser? WhiteUser { get; set; }
+    public ApplicationUser? BlackUser { get; set; }
+    public string Status { get; set; } = "Active"; // Active, Completed, Abandoned
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? EndedAt { get; set; }
+    public string? Winner { get; set; } // "White", "Black", "Draw"
 }

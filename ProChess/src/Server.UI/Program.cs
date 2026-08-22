@@ -1,9 +1,12 @@
+using Application;
+using Infrastructure;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Server.UI.Components;
 using Server.UI.Components.Account;
 using Server.UI.Data;
+using Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,13 @@ builder.Services.AddAuthentication(options =>
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+// Add Infrastructure Services
+builder.Services.AddInfrastructureServices(connectionString);
+
+// Add Application Services
+builder.Services.AddApplicationServices();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
